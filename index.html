@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ankara Rehberi</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+<style>
+  html, body, #root { height: 100%; margin: 0; }
+  body { background: #F3E7D8; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef, useMemo } = React;
+
+/* ============================================================== */
+/* VERİ — 25 ilçe (nüfus: TÜİK ADNKS 2025) + il geneli gezi noktaları */
+/* ============================================================== */
+const DISTRICTS = [
+  { no: 1, name: "Akyurt", pop: 46956, kind: "dis", region: "Kuzeydoğu", note: "İstanbul yoluna yakınlığıyla son yıllarda hızla sanayileşen genç bir ilçe." },
+  { no: 2, name: "Altındağ", pop: 418072, kind: "merkez", region: "Merkez", note: "Ankara Kalesi ve Ulus'un bulunduğu, kentin tarihi çekirdeği." },
+  { no: 3, name: "Ayaş", pop: 13136, kind: "dis", region: "Batı", note: "Meşhur Ayaş elması ve kaya oyma kalıntılarıyla bilinir." },
+  { no: 4, name: "Bala", pop: 20109, kind: "dis", region: "Güney", note: "Tahıl tarımı ve hayvancılığın ağırlıkta olduğu bir bozkır ilçesi." },
+  { no: 5, name: "Beypazarı", pop: 48359, kind: "dis", region: "Kuzeybatı", note: "Osmanlı konaklarıyla dolu çarşısı, telkari gümüş işçiliği ve kurusuyla tanınır." },
+  { no: 6, name: "Çamlıdere", pop: 10203, kind: "dis", region: "Kuzey", note: "Ankara'ya içme suyu sağlayan Çamlıdere Barajı buradadır." },
+  { no: 7, name: "Çankaya", pop: 952198, kind: "merkez", region: "Merkez", note: "Kızılay, Anıtkabir ve üniversite kampüsleriyle şehrin en kalabalık ilçesi." },
+  { no: 8, name: "Çubuk", pop: 101437, kind: "dis", region: "Kuzey", note: "Çubuk Barajı'yla ve köklü turşuculuk geleneğiyle tanınır." },
+  { no: 9, name: "Elmadağ", pop: 45644, kind: "dis", region: "Doğu", note: "Adını çevresindeki Elmadağı'ndan alan, tarım ve ormanla iç içe bir ilçe." },
+  { no: 10, name: "Etimesgut", pop: 632458, kind: "merkez", region: "Batı", note: "Ankara Havalimanı ve havacılık sanayisiyle öne çıkar." },
+  { no: 11, name: "Evren", pop: 2927, kind: "dis", region: "Güneydoğu", note: "1990'larda kurulan, Ankara'nın nüfusça en küçük ilçesi." },
+  { no: 12, name: "Gölbaşı", pop: 172810, kind: "merkez", region: "Güney", note: "Mogan ve Eymir gölleri kıyısındaki yazlık ve mesire bölgesi." },
+  { no: 13, name: "Güdül", pop: 8028, kind: "dis", region: "Kuzeybatı", note: "Küçük ölçekli tarım ve el sanatlarının sürdüğü sakin bir kırsal ilçe." },
+  { no: 14, name: "Haymana", pop: 25798, kind: "dis", region: "Güney", note: "Termal kaynakları ve tarımsal üretimiyle bilinen güney ilçesi." },
+  { no: 15, name: "Kahramankazan", pop: 63143, kind: "dis", region: "Kuzey", note: "Kurtuluş Savaşı'ndaki direnişi nedeniyle adı 2022'de Kazan'dan değiştirildi." },
+  { no: 16, name: "Kalecik", pop: 12564, kind: "dis", region: "Kuzey", note: "Yerli üzüm çeşidi Kalecik Karası'nın ve şarabının memleketi." },
+  { no: 17, name: "Keçiören", pop: 931722, kind: "merkez", region: "Merkez", note: "Nüfusça ikinci sırada; teleferikle Ankara Kalesi'ne bağlanan yamaç mahalleleriyle bilinir." },
+  { no: 18, name: "Kızılcahamam", pop: 27841, kind: "dis", region: "Kuzey", note: "Termal kaplıcaları ve Soğuksu Milli Parkı ile Ankara'nın doğa kaçamağı." },
+  { no: 19, name: "Mamak", pop: 690329, kind: "merkez", region: "Doğu", note: "Şehrin doğusunda hızla büyüyen, ağırlıklı olarak konut bölgesi." },
+  { no: 20, name: "Nallıhan", pop: 26083, kind: "dis", region: "Kuzeybatı", note: "Kuş cenneti ve kanyonlarıyla doğa turizminin merkezi." },
+  { no: 21, name: "Polatlı", pop: 131894, kind: "dis", region: "Güneybatı", note: "Sakarya Meydan Muharebesi toprakları ve antik Frig başkenti Gordion buradadır." },
+  { no: 22, name: "Pursaklar", pop: 168881, kind: "merkez", region: "Kuzey", note: "2008'de ayrı ilçe olan, Ankara'nın en yeni merkez ilçelerinden." },
+  { no: 23, name: "Sincan", pop: 605366, kind: "merkez", region: "Batı", note: "Organize sanayi bölgesi ve demiryolu bağlantılarıyla öne çıkar." },
+  { no: 24, name: "Şereflikoçhisar", pop: 32831, kind: "dis", region: "Güneydoğu", note: "Tuz Gölü kıyısında yer alır; tuz üretimiyle bilinir." },
+  { no: 25, name: "Yenimahalle", pop: 721531, kind: "merkez", region: "Batı", note: "Batıkent ve Bilkent'i barındırır; ASELSAN'ın merkezi buradadır." },
+];
+
+const CATEGORIES = [
+  { key: "tarihi", label: "Tarihi & Turistik", short: "Tarihi" },
+  { key: "muze", label: "Müzeler", short: "Müze" },
+  { key: "carsi", label: "Çarşılar", short: "Çarşı" },
+  { key: "oren", label: "Ören Yerleri", short: "Ören Yeri" },
+  { key: "gol", label: "Göller & Doğa", short: "Göl/Doğa" },
+  { key: "yeme", label: "Yeme-İçme", short: "Lezzet" },
+  { key: "kamu", label: "Kamu Binaları", short: "Kamu" },
+  { key: "misafir", label: "Konaklama", short: "Konaklama" },
+];
+
+/* Okyanus Pusu paletinden — kategori başına bir ton */
+const CATEGORY_COLORS = {
+  tarihi: "#3A2A22",
+  muze: "#8C8A68",
+  carsi: "#B86F52",
+  oren: "#6B4530",
+  gol: "#A6A476",
+  yeme: "#A25A3E",
+  kamu: "#4E3A28",
+  misafir: "#B5AE8A",
+};
+
+/* place: { id, name, district, cat, desc, q(harita arama sorgusu) } */
+const PLACES = [
+  // Çankaya
+  { name: "Anıtkabir", district: "Çankaya", cat: "tarihi", desc: "Atatürk'ün anıt mezarı; aynı zamanda Kurtuluş Savaşı Müzesi'ni barındırır.", q: "Anıtkabir", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Panaroma%20An%C4%B1tkabir.jpg", imageCredit: "Wikimedia Commons (CC BY-SA)" },
+  { name: "Atakule", district: "Çankaya", cat: "tarihi", desc: "Şehri kuşbakışı gösteren, Çankaya'nın simge kulesi.", q: "Atakule Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara_Atakule.JPG", imageCredit: "Wikimedia Commons (CC BY-SA)" },
+  { name: "Kuğulu Park", district: "Çankaya", cat: "tarihi", desc: "Kuğularıyla tanınan, kent merkezinde tarihi bir park.", q: "Kuğulu Park Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara%20Ku%C4%9Fulu%20Park.JPG", imageCredit: "Wikimedia Commons (CC BY-SA)" },
+  { name: "CerModern", district: "Çankaya", cat: "muze", desc: "Eski bir tren bakım atölyesinde kurulan çağdaş sanat müzesi.", q: "CerModern Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/CerModern%2002.jpg", imageCredit: "Wikimedia Commons" },
+  { name: "TBMM (Meclis Binası)", district: "Çankaya", cat: "kamu", desc: "Türkiye Büyük Millet Meclisi'nin bulunduğu tarihi bina.", q: "TBMM Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Building%20of%20the%20Grand%20National%20Assembly%20of%20Turkey.jpg", imageCredit: "Wikimedia Commons" },
+  { name: "Cumhurbaşkanlığı Külliyesi", district: "Çankaya", cat: "kamu", desc: "Devletin üst düzey resmi yönetim binası.", q: "Cumhurbaşkanlığı Külliyesi Ankara" },
+  { name: "Bahçelievler 7. Cadde", district: "Çankaya", cat: "yeme", desc: "Kafe ve restoranlarıyla bilinen köklü bir sokak.", q: "Bahçelievler 7. Cadde Ankara" },
+  { name: "Tunalı Hilmi Caddesi", district: "Çankaya", cat: "yeme", desc: "Restoran, kafe ve mağazalarıyla kalabalık bir cadde.", q: "Tunalı Hilmi Caddesi Ankara" },
+  { name: "ODTÜ / Bilkent üniversite misafirhaneleri", district: "Çankaya", cat: "misafir", desc: "Kampüs içi sosyal tesis konaklama seçenekleri.", q: "ODTÜ Bilkent misafirhane Ankara" },
+
+  // Altındağ
+  { name: "Ankara Kalesi (Hisar)", district: "Altındağ", cat: "tarihi", desc: "Şehre tepeden bakan, Ankara'nın en eski yapılarından tarihi kale.", q: "Ankara Kalesi", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara%20Kalesi%20%C3%BCst%20b%C3%B6l%C3%BCm.jpg", imageCredit: "Wikimedia Commons (CC BY-SA)" },
+  { name: "Anadolu Medeniyetleri Müzesi", district: "Altındağ", cat: "muze", desc: "Anadolu uygarlıklarına ait eserlerin sergilendiği ödüllü müze.", q: "Anadolu Medeniyetleri Müzesi Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Museum%20of%20Anatolian%20Civilizations001.jpg", imageCredit: "Wikimedia Commons" },
+  { name: "Çengelhan Rahmi Koç Müzesi", district: "Altındağ", cat: "muze", desc: "Tarihi bir hanın içinde sanayi ve ulaşım tarihi müzesi.", q: "Çengelhan Rahmi Koç Müzesi Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Rahmi%20M.%20Ko%C3%A7%20Museum%2C%20Ankara.jpg", imageCredit: "Wikimedia Commons" },
+  { name: "Cumhuriyet Müzesi (II. TBMM)", district: "Altındağ", cat: "muze", desc: "Cumhuriyet'in ilk yıllarına tanıklık eden eski meclis binası.", q: "Cumhuriyet Müzesi Ankara" },
+  { name: "Roma Hamamı", district: "Altındağ", cat: "oren", desc: "Roma dönemine ait hamam kalıntıları.", q: "Roma Hamamı Ankara" },
+  { name: "Augustus Tapınağı ve Julianus Sütunu", district: "Altındağ", cat: "oren", desc: "Antik Ankyra kentinden kalma tapınak ve sütun.", q: "Augustus Tapınağı Ankara" },
+  { name: "Hacı Bayram-ı Veli Camii", district: "Altındağ", cat: "tarihi", desc: "Ankara'nın manevi merkezlerinden, tarihi bir cami.", q: "Hacı Bayram Camii Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Haci%20Bayram%20Mosque%2002.jpg", imageCredit: "Wikimedia Commons" },
+  { name: "Ulus Tarihi Çarşısı / Bakırcılar Çarşısı", district: "Altındağ", cat: "carsi", desc: "Şehrin en eski alışveriş dokusunu koruyan çarşı bölgesi.", q: "Bakırcılar Çarşısı Ankara" },
+  { name: "Atpazarı (Antikacılar)", district: "Altındağ", cat: "carsi", desc: "Antika ve el sanatı dükkanlarıyla bilinen tarihi çarşı.", q: "Atpazarı Ankara" },
+  { name: "Hamamönü", district: "Altındağ", cat: "yeme", desc: "Restore edilmiş Osmanlı evlerinde kahvaltı ve geleneksel lezzet mekanları.", q: "Hamamönü Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Hamam%C3%B6n%C3%BC.JPG", imageCredit: "Wikimedia Commons" },
+  { name: "Ankara Valiliği", district: "Altındağ", cat: "kamu", desc: "İlin en üst düzey mülki idare binası.", q: "Ankara Valiliği" },
+
+  // Keçiören
+  { name: "Keçiören Teleferiği", district: "Keçiören", cat: "tarihi", desc: "Ankara Kalesi'ne bağlanan, şehri havadan gösteren hat.", q: "Keçiören Teleferik" },
+
+  // Yenimahalle
+  { name: "Anadolu Parkı", district: "Yenimahalle", cat: "gol", desc: "Göl ve yürüyüş alanlarıyla geniş bir kent parkı.", q: "Anadolu Parkı Ankara" },
+  { name: "Ostim Sanayi Çarşısı", district: "Yenimahalle", cat: "carsi", desc: "Türkiye'nin köklü sanayi sitelerinden biri.", q: "Ostim Ankara" },
+
+  // Etimesgut
+  { name: "Türk Hava Kurumu Havacılık Müzesi", district: "Etimesgut", cat: "muze", desc: "Türk havacılık tarihine ait uçak ve belgelerin sergilendiği müze.", q: "THK Havacılık Müzesi Etimesgut" },
+
+  // Gölbaşı
+  { name: "Mogan Gölü", district: "Gölbaşı", cat: "gol", desc: "Tekne turları, yürüyüş yolu ve kıyı kafeleriyle mesire alanı.", q: "Mogan Gölü Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara%20g%C3%B6lba%C5%9F%C4%B1,%20t%C3%BCrkiye%20-%20panoramio.jpg", imageCredit: "Wikimedia Commons (CC BY 3.0)" },
+  { name: "Eymir Gölü", district: "Gölbaşı", cat: "gol", desc: "Doğa yürüyüşü ve gün batımı için sakin bir göl.", q: "Eymir Gölü Ankara" },
+  { name: "Mogan Gölü kıyı restoranları", district: "Gölbaşı", cat: "yeme", desc: "Göl manzaralı balık ve ev yemeği mekanları.", q: "Mogan Gölü restoranlar" },
+
+  // Polatlı
+  { name: "Gordion Ören Yeri", district: "Polatlı", cat: "oren", desc: "Antik Frig başkenti; Kral Midas Tümülüsü buradadır.", q: "Gordion Ören Yeri Polatlı", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Gordion12.JPG", imageCredit: "Wikimedia Commons" },
+  { name: "Gordion Müzesi", district: "Polatlı", cat: "muze", desc: "Gordion kazılarından çıkan eserlerin sergilendiği müze.", q: "Gordion Müzesi Polatlı" },
+  { name: "Duatepe Anıtı (Sakarya Meydan Muharebesi)", district: "Polatlı", cat: "tarihi", desc: "Kurtuluş Savaşı'nın dönüm noktası Sakarya Meydan Muharebesi anıtı.", q: "Duatepe Anıtı Polatlı" },
+
+  // Çubuk
+  { name: "Çubuk Barajı", district: "Çubuk", cat: "gol", desc: "Piknik ve yürüyüş alanlarıyla çevrili baraj gölü.", q: "Çubuk Barajı" },
+  { name: "Çubuk turşusu", district: "Çubuk", cat: "yeme", desc: "İlçenin köklü turşuculuk geleneğiyle özdeşleşmiş yöresel lezzeti.", q: "Çubuk turşu pazarı" },
+
+  // Beypazarı
+  { name: "Beypazarı Tarihi Evleri ve Çarşısı", district: "Beypazarı", cat: "tarihi", desc: "Korunmuş Osmanlı konaklarıyla dolu taşlı sokaklar.", q: "Beypazarı Tarihi Çarşı", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Beypazar%C4%B1%20H%C4%B1rkatepe%20K%C3%B6y%20%C3%A7e%C5%9Fmesi.jpg", imageCredit: "Wikimedia Commons (CC BY 3.0)" },
+  { name: "Beypazarı Kuru ve Telkari Çarşısı", district: "Beypazarı", cat: "carsi", desc: "Telkari gümüş işçiliği ve Beypazarı kurusunun satıldığı çarşı.", q: "Beypazarı Telkari Çarşısı" },
+  { name: "İnözü Vadisi (Kanyon)", district: "Beypazarı", cat: "gol", desc: "Yürüyüş rotalarıyla doğal bir kanyon vadisi.", q: "İnözü Vadisi Beypazarı" },
+  { name: "Beypazarı güveç ve kurusu", district: "Beypazarı", cat: "yeme", desc: "İlçenin en tanınmış iki yöresel lezzeti.", q: "Beypazarı güveç lokantası", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Beypazar%C4%B1%20kurusu.jpg", imageCredit: "Wikimedia Commons" },
+
+  // Kızılcahamam
+  { name: "Soğuksu Milli Parkı", district: "Kızılcahamam", cat: "gol", desc: "Orman içi yürüyüş rotaları ve doğal yaşam alanı.", q: "Soğuksu Milli Parkı Kızılcahamam" },
+  { name: "Kızılcahamam termal tesisleri", district: "Kızılcahamam", cat: "misafir", desc: "Kaplıcalı otel ve konaklama tesisleriyle bilinen bölge.", q: "Kızılcahamam termal otel" },
+
+  // Nallıhan
+  { name: "Nallıhan Kuş Cenneti", district: "Nallıhan", cat: "gol", desc: "Kızılcahamam-Nallıhan Tabiat Parkı içinde kuş gözlem alanı.", q: "Nallıhan Kuş Cenneti" },
+
+  // Kalecik
+  { name: "Kalecik Kalesi", district: "Kalecik", cat: "tarihi", desc: "İlçeye adını veren tarihi kale kalıntısı.", q: "Kalecik Kalesi" },
+  { name: "Kalecik Karası bağ evleri", district: "Kalecik", cat: "yeme", desc: "Yerli üzüm çeşidinden üretilen şarabıyla tanınan bağ bölgesi.", q: "Kalecik bağ evleri şarap" },
+
+  // Çamlıdere
+  { name: "Çamlıdere Barajı", district: "Çamlıdere", cat: "gol", desc: "Ankara'nın önemli içme suyu kaynaklarından biri.", q: "Çamlıdere Barajı" },
+
+  // Ayaş
+  { name: "Ayaş Kaya Mezarları ve Kalesi", district: "Ayaş", cat: "oren", desc: "Kayaya oyulmuş tarihi mezar ve kale kalıntıları.", q: "Ayaş Kalesi" },
+  { name: "Ayaş elması", district: "Ayaş", cat: "yeme", desc: "İlçeyle özdeşleşmiş, sonbaharda pazarları dolduran meyve.", q: "Ayaş elma pazarı" },
+
+  // Bala
+  { name: "Hirfanlı Barajı (Bala kıyısı)", district: "Bala", cat: "gol", desc: "Balıkçılık ve mesire alanlarıyla geniş bir baraj gölü.", q: "Hirfanlı Barajı Bala" },
+
+  // Haymana
+  { name: "Haymana Kaplıcaları", district: "Haymana", cat: "gol", desc: "Şifalı sularıyla bilinen termal kaynaklar.", q: "Haymana Kaplıcaları" },
+  { name: "Haymana termal otelleri", district: "Haymana", cat: "misafir", desc: "Kaplıca çevresinde konaklama tesisleri.", q: "Haymana termal otel" },
+
+  // Şereflikoçhisar
+  { name: "Tuz Gölü", district: "Şereflikoçhisar", cat: "gol", desc: "Türkiye'nin ikinci büyük gölü; tuz üretimiyle bilinir.", q: "Tuz Gölü Şereflikoçhisar" },
+  { name: "Koçhisar Kalesi", district: "Şereflikoçhisar", cat: "tarihi", desc: "İlçe merkezindeki tarihi kale kalıntısı.", q: "Koçhisar Kalesi" },
+
+  // Akyurt
+  { name: "Balıkhisar Höyüğü", district: "Akyurt", cat: "oren", desc: "Tunç Çağı'na (yaklaşık MÖ 3000) tarihlenen, 15 metre yüksekliğinde antik höyük.", q: "Balıkhisar Höyüğü Akyurt" },
+  { name: "Kızık Göleti", district: "Akyurt", cat: "gol", desc: "Akyurt Dolay Mesire Alanı içinde, piknik ve kuş gözlemi için tercih edilen gölet.", q: "Kızık Göleti Akyurt" },
+  { name: "Akyurt Merkez Camii", district: "Akyurt", cat: "tarihi", desc: "İlçenin en eski yapılarından biri; çevresinde tarihi çarşı düzenlemesi bulunur.", q: "Akyurt Merkez Camii" },
+  { name: "İbrahim Ağa Konağı", district: "Akyurt", cat: "tarihi", desc: "Restore edilerek kent müzesine dönüştürülen tarihi bir Osmanlı konağı.", q: "İbrahim Ağa Konağı Akyurt" },
+  { name: "Saat Kulesi ve Cumhuriyet Meydanı", district: "Akyurt", cat: "tarihi", desc: "İlçe merkezindeki meydan ve simge saat kulesi.", q: "Cumhuriyet Meydanı Akyurt" },
+  { name: "Karacalar Doğa Parkı", district: "Akyurt", cat: "gol", desc: "Karacalar Mahallesi'nde yürüyüş yolları ve oturma alanlarıyla bir doğa parkı.", q: "Karacalar Mahallesi Parkı Akyurt" },
+  { name: "Balıkhisar Lavanta Bahçesi", district: "Akyurt", cat: "gol", desc: "Balıkhisar Mahallesi'nde, yazın çiçek açan geniş bir lavanta bahçesi.", q: "Lavanta Bahçesi Balıkhisar Akyurt" },
+  { name: "Bölükbaşı Restaurant", district: "Akyurt", cat: "yeme", desc: "Izgara ve kebap çeşitleriyle bilinen, yerel halkın sık tercih ettiği bir lokanta.", q: "Bölükbaşı Restaurant Akyurt" },
+  { name: "Kavaklı Restaurant", district: "Akyurt", cat: "yeme", desc: "Esenboğa Havalimanı yolu üzerinde, yolculuk molaları için tercih edilen bir mekan.", q: "Kavaklı Restaurant Akyurt" },
+
+  // Elmadağ
+  { name: "Elmadağ Kayak Merkezi", district: "Elmadağ", cat: "gol", desc: "Ankara'ya en yakın kayak merkezi; kışın kayak, yazın doğa yürüyüşü imkanı sunar.", q: "Elmadağ Kayak Merkezi" },
+  { name: "Hasandede Türbesi", district: "Elmadağ", cat: "tarihi", desc: "Hasanoğlan kasabasında, yanı başındaki Hasandede Pınarı ile birlikte ziyaret edilen tarihi türbe.", q: "Hasandede Türbesi Hasanoğlan" },
+
+  // Mamak
+  { name: "Aqua Vega Akvaryum", district: "Mamak", cat: "tarihi", desc: "Avrupa'nın en büyük tünel akvaryumlarından biri; çok sayıda deniz canlısını yakından gösterir.", q: "Aqua Vega Akvaryum Mamak" },
+
+  // Kahramankazan
+  { name: "15 Temmuz Şehitleri ve Demokrasi Müzesi", district: "Kahramankazan", cat: "muze", desc: "İlçenin 15 Temmuz gecesindeki direnişini anlatan müze.", q: "15 Temmuz Şehitleri ve Demokrasi Müzesi Kahramankazan" },
+  { name: "Satı Kadın Anıt Mezarı", district: "Kahramankazan", cat: "tarihi", desc: "Türkiye'nin ilk kadın milletvekillerinden Satı Çırpan'ın anıldığı yer.", q: "Satı Kadın Anıt Mezarı Kahramankazan" },
+
+  // Sincan
+  { name: "Ankara Harikalar Diyarı", district: "Sincan", cat: "tarihi", desc: "Avrupa'nın en büyük parklarından biri; masal temalı alanlar ve aile aktiviteleriyle bilinir.", q: "Ankara Harikalar Diyarı Sincan", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Harikalar%20Diyari%2005984%20nevit.jpg", imageCredit: "Wikimedia Commons" },
+];
+
+/* İlçe profilleri — tarih / coğrafya / ekonomi. Şimdilik Akyurt, Çankaya
+   ve Keçiören dolduruldu; diğer ilçeler kademeli olarak eklenecek.
+   image alanı yalnızca özgür lisanslı (Wikimedia Commons) ve doğrulanmış
+   bir fotoğraf bulunduğunda doldurulur; yoksa null bırakılır. */
+const DISTRICT_INFO = {
+  Akyurt: {
+    image: null,
+    imageCredit: null,
+    history:
+      "Balıkhisar Höyüğü'ndeki bulgulara göre yerleşim geçmişi Eski Tunç Çağı'na (MÖ 3000) kadar uzanır; bölge sırasıyla Hitit, Frig, Roma, Bizans, Selçuklu ve Osmanlı dönemlerinde iskân görmüştür. Tarihi 'Kral Yolu' güzergâhı üzerinde bulunması Roma döneminde önemini artırmıştır. 1971'de belediye teşkilatı kurulan Akyurt, 9 Mayıs 1990'da Çubuk ve Kalecik ilçelerinden ayrılan köylerle birlikte müstakil ilçe statüsü kazanmıştır.",
+    geography:
+      "İç Anadolu Bölgesi'nde, Ankara şehir merkezine yaklaşık 32 km uzaklıktadır. Yüzölçümü 372 km², rakımı 960 metredir. Kuzeyde Tekebeli Dağı, güneyde Hüseyin Gazi Tepesi, doğuda İdris Dağı ile çevrilidir; arazi güneyde düzlük, kuzeyde dağlıktır. Karasal iklimin hâkim olduğu ilçede yazlar sıcak ve kurak, kışlar soğuk ve yağışlı geçer.",
+    economy:
+      "Esenboğa Havalimanı'na ve İstanbul yönüne yakınlığı sayesinde son yıllarda sanayi hızla gelişmiştir. Tarım ve hayvancılık geleneksel geçim kaynakları arasında yer almaya devam eder; ilçenin bir dönem ünlü olan bağcılık kültürünü canlandırma çalışmaları da sürmektedir.",
+  },
+  Çankaya: {
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara%20asv2021-10%20img70%20K%C4%B1z%C4%B1lay%20Square.jpg",
+    imageCredit: "Wikimedia Commons",
+    history:
+      "Bugünkü Çankaya bölgesi, Cumhuriyet'in ilanından sonra Atatürk'ün yaptırdığı Çankaya Köşkü'ne adını veren tepeyle birlikte anılmaya başlanmış; devlet ricalinin yerleşmesiyle birlikte 1930'larda Ankara'nın yeni yönetim ve elit yerleşim merkezi hâline gelmiştir. Yabancı devletlerin büyükelçiliklerinin de bu bölgede kümelenmesiyle Çankaya, kentin siyasi ve diplomatik ağırlık merkezi olmuştur.",
+    geography:
+      "Ankara'nın güney-orta kesiminde yer alan Çankaya, ilin nüfusça en kalabalık ilçesidir. Kuzeyde Kızılay ve Kavaklıdere gibi düzlük ticaret ve konut bölgelerinden, güneye doğru Çayyolu ve Ümitköy gibi daha yüksek rakımlı, tepelik yerleşim alanlarına uzanır. ODTÜ ve Bilkent gibi geniş üniversite kampüsleri ilçenin batı kesimlerinde önemli yeşil alanlar oluşturur.",
+    economy:
+      "Ekonomisi büyük ölçüde hizmet sektörüne dayanır: kamu yönetimi (TBMM, bakanlıklar, Cumhurbaşkanlığı Külliyesi), finans, eğitim (çok sayıda üniversite) ve büyükelçilikler ilçede yoğunlaşmıştır. Tunalı Hilmi Caddesi ve Bahçelievler 7. Cadde gibi merkezler alışveriş ve gastronomi açısından kentin en hareketli noktaları arasındadır; turizmde ise Anıtkabir ve Atakule öne çıkar.",
+  },
+  Keçiören: {
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ke%C3%A7i%C3%B6ren.JPG",
+    imageCredit: "Wikimedia Commons",
+    history:
+      "Adını, Osmanlı döneminde bölgede yetişen keçi sürüleri ile bağ ve bahçelerden aldığı düşünülen Keçiören, uzun süre Ankara'nın meyve bahçeleriyle (özellikle üzüm ve elma) tanınan bir banliyösü olarak kalmıştır. Hızlı göç ve kentleşmeyle 20. yüzyılın ikinci yarısında yerleşim büyük ölçüde konuta dönüşmüş; 1984'te büyükşehir belediye sistemiyle birlikte müstakil bir ilçe olmuştur.",
+    geography:
+      "Ankara'nın kuzeyinde, Ankara Kalesi'nin bulunduğu tepenin arkasına doğru yükselen yamaçlarda kurulu bir ilçedir; yüzölçümü yaklaşık 159 km², rakımı 950 metre civarındadır. Çubuk Çayı ilçenin ortasından geçer. Kentin nüfusça en kalabalık ikinci ilçesi olan Keçiören, teleferik hattıyla Ankara Kalesi'ne bağlanan yamaç mahalleleriyle bilinir.",
+    economy:
+      "Ekonomisi ağırlıklı olarak konut ve hizmet sektörüne dayanır; ilçede büyük alışveriş merkezleri, çarşılar ve yerel esnaf yoğun bir ticari doku oluşturur. Tarihte önemli bir geçim kaynağı olan meyve bahçeciliği büyük ölçüde kentleşmeyle geri çekilmiş olsa da, ilçe hâlâ Ankara'nın konut üretiminde önde gelen bölgelerinden biridir.",
+  },
+};
+
+const MAX_POP = Math.max(...DISTRICTS.map((d) => d.pop));
+const TOTAL_POP = DISTRICTS.reduce((s, d) => s + d.pop, 0);
+const MERKEZ_COUNT = DISTRICTS.filter((d) => d.kind === "merkez").length;
+const fmt = (n) => n.toLocaleString("tr-TR");
+const mapsSearch = (q) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q + ", Ankara")}`;
+const mapsDir = (q) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(q + ", Ankara")}`;
+
+/* ---------------- Hitit Güneş Kursu amblemi ---------------- */
+/* ---------------- Hitit Güneş Kursu — Ankara'nın simgesi ---------------- */
+function SunDisc({ size = 48, color = "#B86F52" }) {
+  const spokes = Array.from({ length: 8 });
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none" aria-hidden="true">
+      <circle cx="50" cy="50" r="40" stroke={color} strokeWidth="2.6" />
+      <circle cx="50" cy="50" r="28" stroke={color} strokeWidth="1.6" />
+      <circle cx="50" cy="50" r="6" fill={color} />
+      {spokes.map((_, i) => {
+        const rad = (i * 360 * Math.PI) / (spokes.length * 180);
+        const cos = Math.cos(rad), sin = Math.sin(rad);
+        const x1 = 50 + 28 * cos, y1 = 50 + 28 * sin;
+        const x2 = 50 + 40 * cos, y2 = 50 + 40 * sin;
+        const sx = 50 + 40 * cos, sy = 50 + 40 * sin;
+        const px = 50 + 46 * cos, py = 50 + 46 * sin;
+        return (
+          <g key={i}>
+            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth="2" />
+            <line x1={sx} y1={sy} x2={px} y2={py} stroke={color} strokeWidth="1.3" />
+            <circle cx={px} cy={py} r="3" fill={color} />
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+/* ---------------- Hüdhüd (ibibik) kuşu — stilize SVG ---------------- */
+function Hoopoe({ size = 64 }) {
+  return (
+    <svg width={size} height={size * 0.7} viewBox="0 0 120 84" fill="none" aria-hidden="true">
+      {/* kuyruk */}
+      <rect x="4" y="40" width="26" height="10" rx="2" fill="#2A2420" />
+      <rect x="4" y="40" width="26" height="3.2" fill="#F3E7D8" />
+      <rect x="4" y="46.8" width="26" height="3.2" fill="#F3E7D8" />
+      {/* gövde */}
+      <ellipse cx="58" cy="42" rx="30" ry="16" fill="#B86F52" />
+      {/* kanat */}
+      <g className="hoopoe-wing" style={{ transformOrigin: "56px 38px" }}>
+        <path d="M46 30 C70 22, 92 30, 96 44 C78 46, 58 46, 46 42 Z" fill="#2A2420" />
+        <path d="M50 32 C68 27, 84 32, 88 40 C74 41, 60 41, 50 38 Z" fill="#F3E7D8" />
+        <path d="M52 36 C66 33, 78 36, 82 42 C70 43, 60 43, 52 40 Z" fill="#2A2420" />
+      </g>
+      {/* baş */}
+      <circle cx="90" cy="30" r="12" fill="#B86F52" />
+      {/* ibik (taç) */}
+      <g fill="#B86F52" stroke="#2A2420" strokeWidth="1.5">
+        <path d="M84 20 L82 6 L87 17 Z" />
+        <path d="M89 18 L88 4 L93 16 Z" />
+        <path d="M94 19 L95 5 L98 17 Z" />
+      </g>
+      {/* gaga */}
+      <path d="M100 30 L118 26 L100 24 Z" fill="#2A2420" />
+      {/* göz */}
+      <circle cx="93" cy="27" r="1.8" fill="#2A2420" />
+    </svg>
+  );
+}
+
+function MusicNote({ symbol, dx }) {
+  return (
+    <span className="music-note" style={{ "--dx": dx + "px" }}>
+      {symbol}
+    </span>
+  );
+}
+
+/* ============================================================== */
+/* AÇILIŞ EKRANI — Hüdhüd soldan yukarı, sonra sağa uçar, tepede    */
+/* döner ve üç kez öter.                                            */
+/* ============================================================== */
+function SplashIntro({ onDone }) {
+  const [notes, setNotes] = useState([]);
+  const audioCtxRef = useRef(null);
+
+  useEffect(() => {
+    function beep() {
+      try {
+        if (!audioCtxRef.current) {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          audioCtxRef.current = new Ctx();
+        }
+        const ctx = audioCtxRef.current;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(900, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1500, ctx.currentTime + 0.09);
+        gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.16);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.18);
+      } catch (e) {
+        /* ses engellenmişse sessizce geç */
+      }
+    }
+
+    // Kuş 40%'te merkeze varır, %40-66 arası kendi etrafında döner,
+    // %66-88 yerinde durup öter (notalar bu evrede yükselir),
+    // %88-100 sağa aşağı doğru süzülerek sahneden kaybolur.
+    const symbolPool = ["♪", "♫", "♩", "♬", "♪", "♫"];
+    const singTimes = [4300, 4700, 5100];
+    const notesPerSing = 2;
+    const timers = [];
+
+    singTimes.forEach((t, i) => {
+      timers.push(
+        window.setTimeout(() => {
+          beep();
+          for (let k = 0; k < notesPerSing; k++) {
+            timers.push(
+              window.setTimeout(() => {
+                const id = Date.now() + Math.random();
+                const symbol = symbolPool[(i * notesPerSing + k) % symbolPool.length];
+                const dx = (k === 0 ? -1 : 1) * (10 + i * 4 + k * 6);
+                setNotes((prev) => [...prev, { id, symbol, dx }]);
+                timers.push(
+                  window.setTimeout(() => {
+                    setNotes((prev) => prev.filter((n) => n.id !== id));
+                  }, 1000)
+                );
+              }, k * 110)
+            );
+          }
+        }, t)
+      );
+    });
+
+    const done = window.setTimeout(onDone, 6500);
+    timers.push(done);
+
+    return () => timers.forEach(clearTimeout);
+  }, [onDone]);
+
+  return (
+    <div className="fixed inset-0 z-50 splash-sky flex items-center justify-center overflow-hidden">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        .font-display { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.01em; }
+        .font-body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+        .splash-sky {
+          background: linear-gradient(180deg, #3A2A22 0%, #8C8A68 45%, #F3E7D8 100%);
+        }
+        .hoopoe-fly {
+          position: absolute;
+          left: 50%; top: 50%;
+          animation: hoopoePath 6.2s cubic-bezier(.35,.02,.25,1) both;
+        }
+        /* 0-22%: soldan yukarı yüksel — 22-40%: sağa uçup merkeze var —
+           40-66%: kendi etrafında daire çiz — 66-88%: yerinde dur ve öt —
+           88-100%: sağa aşağı doğru süzülerek kaybol. */
+        @keyframes hoopoePath {
+          0%   { transform: translate(-230px, 160px) rotate(-6deg) scale(0.85); opacity: 0; }
+          6%   { opacity: 1; }
+          22%  { transform: translate(-210px, -40px) rotate(-2deg) scale(0.95); }
+          40%  { transform: translate(0px, -160px) rotate(0deg) scale(1); }
+          47%  { transform: translate(24px, -180px) rotate(14deg) scale(1); }
+          55%  { transform: translate(-2px, -202px) rotate(-4deg) scale(1); }
+          62%  { transform: translate(-22px, -168px) rotate(-14deg) scale(1); }
+          66%  { transform: translate(0px, -160px) rotate(0deg) scale(1); }
+          73%  { transform: translate(3px, -163px) rotate(2deg) scale(1); }
+          80%  { transform: translate(-3px, -157px) rotate(-2deg) scale(1); }
+          88%  { transform: translate(0px, -160px) rotate(0deg) scale(1); opacity: 1; }
+          96%  { transform: translate(170px, 110px) rotate(16deg) scale(0.75); opacity: 0.4; }
+          100% { transform: translate(320px, 230px) rotate(24deg) scale(0.55); opacity: 0; }
+        }
+        .hoopoe-wing { animation: wingFlap .22s ease-in-out infinite alternate; }
+        @keyframes wingFlap { from { transform: scaleY(1); } to { transform: scaleY(0.55); } }
+        .sun-pulse { animation: sunPulse 2s ease-in-out infinite; }
+        @keyframes sunPulse { 0%,100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
+        .music-note {
+          position: absolute; top: -6px; right: 4px;
+          font-size: 22px; color: #B86F52; font-weight: 600;
+          animation: noteRise 1s ease-out forwards;
+          pointer-events: none;
+        }
+        @keyframes noteRise {
+          0%   { opacity: 0; transform: translate(0,0) scale(0.6) rotate(-8deg); }
+          20%  { opacity: 1; }
+          100% { opacity: 0; transform: translate(var(--dx), -48px) scale(1.15) rotate(8deg); }
+        }
+        .brand-fade { animation: brandFade 6.5s ease both; }
+        @keyframes brandFade {
+          0%, 76% { opacity: 0; transform: translateY(6px); }
+          90%, 100% { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+
+      <div className="sun-pulse absolute" style={{ top: "18%" }}>
+        <SunDisc size={70} color="#B86F52" />
+      </div>
+
+      <div className="hoopoe-fly">
+        <Hoopoe size={70} />
+        {notes.map((n) => (
+          <MusicNote key={n.id} symbol={n.symbol} dx={n.dx} />
+        ))}
+      </div>
+
+      <div className="brand-fade absolute bottom-20 text-center px-8">
+        <div className="font-display font-bold" style={{ fontSize: "2.6rem", color: "#3A2A22" }}>Ankara</div>
+        <div className="font-body text-sm mt-1" style={{ color: "rgba(58,42,34,0.65)" }}>
+          25 ilçe · gezi rehberi
+        </div>
+      </div>
+
+      <button
+        onClick={onDone}
+        className="absolute bottom-6 right-6 font-mono text-xs px-3 py-1.5 rounded-full border"
+        style={{ borderColor: "rgba(58,42,34,0.3)", color: "rgba(58,42,34,0.6)" }}
+      >
+        Atla
+      </button>
+    </div>
+  );
+}
+
+function KindBadge({ kind }) {
+  const isMerkez = kind === "merkez";
+  return (
+    <span
+      className="font-mono text-xs px-2.5 py-1 rounded-full"
+      style={{
+        color: "#FBF6EF",
+        background: isMerkez ? "#B86F52" : "#8C8A68",
+      }}
+    >
+      {isMerkez ? "MERKEZ İLÇE" : "DIŞ İLÇE"}
+    </span>
+  );
+}
+
+function DistrictImage({ src, alt, credit }) {
+  const [ok, setOk] = useState(true);
+  if (!src) return null;
+  return (
+    <div className="rounded-xl overflow-hidden border mt-2 mb-1" style={{ borderColor: "rgba(58,42,34,0.15)" }}>
+      {ok ? (
+        <img
+          src={src}
+          alt={alt}
+          className="w-full object-cover"
+          style={{ height: 140 }}
+          onError={() => setOk(false)}
+        />
+      ) : (
+        <div
+          className="w-full flex items-center justify-center"
+          style={{ height: 140, background: "linear-gradient(180deg, #F3E7D8 0%, #D9BFA3 100%)" }}
+        >
+          <span className="font-body text-xs" style={{ color: "rgba(58,42,34,0.5)" }}>
+            Fotoğraf bu önizlemede yüklenemedi
+          </span>
+        </div>
+      )}
+      {credit && (
+        <div className="px-3 py-1" style={{ background: "#FBF6EF" }}>
+          <span className="font-mono text-xs" style={{ color: "rgba(58,42,34,0.45)" }}>{credit}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PlaceRow({ p }) {
+  const cat = CATEGORIES.find((c) => c.key === p.cat);
+  const catColor = CATEGORY_COLORS[p.cat] || "#8C8A68";
+  return (
+    <div
+      className="jelly card-in mb-3"
+      style={{ background: "#FBF6EF", borderRadius: 20, padding: "16px 18px", boxShadow: "0 6px 16px -10px rgba(58,42,34,0.28)" }}
+    >
+      <div className="flex items-center justify-between gap-2">
+        <span className="font-display font-semibold text-sm">{p.name}</span>
+        <span
+          className="font-mono text-xs px-2 py-0.5 rounded-full shrink-0"
+          style={{ background: catColor, color: "#FBF6EF" }}
+        >
+          {cat.short}
+        </span>
+      </div>
+      <div className="text-xs mt-0.5" style={{ color: "rgba(58,42,34,0.5)" }}>{p.district}</div>
+      <p className="font-body text-sm mt-1 leading-relaxed" style={{ color: "rgba(58,42,34,0.8)" }}>{p.desc}</p>
+      {p.image && <DistrictImage src={p.image} alt={p.name} credit={p.imageCredit} />}
+      <div className="flex gap-2 mt-2">
+        <a
+          href={mapsSearch(p.q)} target="_blank" rel="noreferrer"
+          className="font-mono text-xs px-2.5 py-1 rounded-full border jelly"
+          style={{ borderColor: "rgba(58,42,34,0.25)", color: "rgba(58,42,34,0.65)" }}
+        >
+          Haritada Gör
+        </a>
+        <a
+          href={mapsDir(p.q)} target="_blank" rel="noreferrer"
+          className="font-mono text-xs px-2.5 py-1 rounded-full jelly"
+          style={{ background: "#B86F52", color: "#FBF6EF" }}
+        >
+          Yol Tarifi →
+        </a>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================== */
+function App() {
+  const [showSplash, setShowSplash] = useState(true);
+  const [tab, setTab] = useState("ilceler"); // ilceler | gezi
+  const [query, setQuery] = useState("");
+  const [kindFilter, setKindFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("alpha");
+  const [selectedNo, setSelectedNo] = useState(null);
+  const [catFilter, setCatFilter] = useState("all");
+
+  useEffect(() => {
+    function onKey(e) { if (e.key === "Escape") setSelectedNo(null); }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  const filteredDistricts = useMemo(() => {
+    let list = DISTRICTS.filter((d) => d.name.toLocaleLowerCase("tr").includes(query.toLocaleLowerCase("tr")));
+    if (kindFilter !== "all") list = list.filter((d) => d.kind === kindFilter);
+    return [...list].sort((a, b) => (sortBy === "pop" ? b.pop - a.pop : a.name.localeCompare(b.name, "tr")));
+  }, [query, kindFilter, sortBy]);
+
+  const filteredPlaces = useMemo(() => {
+    let list = PLACES;
+    if (catFilter !== "all") list = list.filter((p) => p.cat === catFilter);
+    if (query) list = list.filter((p) =>
+      (p.name + p.district).toLocaleLowerCase("tr").includes(query.toLocaleLowerCase("tr"))
+    );
+    return list;
+  }, [catFilter, query, tab]);
+
+  const selected = DISTRICTS.find((d) => d.no === selectedNo) || null;
+  const selectedPlaces = selected ? PLACES.filter((p) => p.district === selected.name) : [];
+  const selectedInfo = selected ? DISTRICT_INFO[selected.name] : null;
+
+  if (showSplash) return <SplashIntro onDone={() => setShowSplash(false)} />;
+
+  return (
+    <div className="min-h-screen bg-paper font-body text-ink pb-16">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+        .font-display { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.01em; }
+        .font-body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+        .font-mono { font-family: 'IBM Plex Mono', 'Courier New', monospace; }
+        .bg-paper { background-color: #F3E7D8; }
+        .text-ink { color: #3A2A22; }
+        .card-paper { background: #FBF6EF; }
+        @keyframes stampIn { 0% { opacity:0; transform: scale(1.7) rotate(-16deg);} 55%{opacity:1; transform: scale(0.93) rotate(-7deg);} 78%{transform: scale(1.04) rotate(-9deg);} 100%{opacity:1; transform: scale(1) rotate(-8deg);} }
+        @keyframes stampPulse { 0%,100% { transform: scale(1) rotate(-8deg); } 50% { transform: scale(1.05) rotate(-8deg); } }
+        .stamp-anim { animation: stampIn .55s cubic-bezier(.2,.8,.3,1) both, stampPulse 2.4s ease-in-out 0.6s infinite; }
+        @keyframes sheetIn { from { transform: translateY(100%);} to { transform: translateY(0);} }
+        .sheet-in { animation: sheetIn .42s cubic-bezier(.32,1.4,.44,1) both; }
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+        .fade-in { animation: fadeIn .2s ease both; }
+        input::placeholder { color: rgba(58,42,34,0.4); }
+        .chip-row::-webkit-scrollbar { display:none; }
+
+        @keyframes cardFloat { 0%,100% { margin-top: 0px; } 50% { margin-top: -4px; } }
+        .float { animation: cardFloat 4.6s ease-in-out infinite; }
+        @keyframes cardIn { 0% { opacity:0; transform: translateY(18px) scale(.95); } 100% { opacity:1; transform: translateY(0) scale(1); } }
+        .card-in { animation: cardIn .5s cubic-bezier(.22,.9,.25,1.35) both; }
+        .card-in-float { animation: cardIn .5s cubic-bezier(.22,.9,.25,1.35) both, cardFloat 4.6s ease-in-out infinite; }
+        .jelly { transition: transform .16s cubic-bezier(.34,1.56,.64,1); }
+        .jelly:active { transform: scale(.94) rotate(-0.6deg); }
+        @keyframes blobDrift {
+          0%,100% { transform: translate(0,0) scale(1); }
+          33%     { transform: translate(4%,-4%) scale(1.08); }
+          66%     { transform: translate(-3%,3%) scale(0.95); }
+        }
+        .blob { position:absolute; border-radius:50%; filter: blur(70px); opacity:.4; animation: blobDrift 16s ease-in-out infinite; }
+      `}</style>
+
+      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+        <div className="blob" style={{ width: "70vw", height: "70vw", left: "-20%", top: "-15%", background: "#D9BFA3", animationDelay: "0s" }} />
+        <div className="blob" style={{ width: "60vw", height: "60vw", right: "-20%", top: "35%", background: "#8C8A68", animationDelay: "-6s" }} />
+        <div className="blob" style={{ width: "50vw", height: "50vw", left: "10%", bottom: "-15%", background: "#B86F52", opacity: 0.18, animationDelay: "-11s" }} />
+      </div>
+
+      <div className="relative" style={{ zIndex: 1 }}>
+
+      {/* ---------- Hero ---------- */}
+      <header className="px-5 pt-8 pb-4">
+        <div className="flex items-center justify-between mb-4">
+          <span
+            className="font-mono text-xs tracking-widest px-3 py-1 rounded-full float"
+            style={{ background: "#EAD9C0", color: "#4E3A28" }}
+          >
+            T.C. · 06 · BAŞKENT
+          </span>
+          <span className="float" style={{ animationDelay: "-2s" }}>
+            <SunDisc size={30} color="#B86F52" />
+          </span>
+        </div>
+        <h1 className="font-display font-bold leading-none card-in" style={{ fontSize: "2.6rem", color: "#3A2A22" }}>Ankara</h1>
+        <p className="font-body text-sm mt-2 max-w-sm" style={{ color: "rgba(58,42,34,0.72)" }}>
+          25 ilçenin tarihi yerleri, müzeleri, çarşıları, ören yerleri, gölleri, lezzetleri ve kamu binaları — harita ve yol tarifiyle.
+        </p>
+
+        <div className="flex gap-2 mt-5">
+          <button
+            onClick={() => setTab("ilceler")}
+            className="flex-1 font-mono text-xs py-2.5 rounded-full jelly"
+            style={{
+              background: tab === "ilceler" ? "#B86F52" : "#EAD9C0",
+              color: tab === "ilceler" ? "#FBF6EF" : "#4E3A28",
+            }}
+          >
+            İlçe Sicili
+          </button>
+          <button
+            onClick={() => setTab("gezi")}
+            className="flex-1 font-mono text-xs py-2.5 rounded-full jelly"
+            style={{
+              background: tab === "gezi" ? "#B86F52" : "#EAD9C0",
+              color: tab === "gezi" ? "#FBF6EF" : "#4E3A28",
+            }}
+          >
+            Gezi Rehberi
+          </button>
+        </div>
+      </header>
+
+      {/* ---------- Kontroller ---------- */}
+      <div className="sticky top-0 z-10 px-5 py-3 backdrop-blur-sm" style={{ background: "rgba(239,245,241,0.88)" }}>
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder={tab === "ilceler" ? "İlçe ara…" : "Yer ya da ilçe ara…"}
+          className="w-full font-body text-sm rounded-full px-4 py-2.5 outline-none"
+          style={{ background: "#FBF6EF", boxShadow: "0 4px 12px -6px rgba(58,42,34,0.25)" }}
+        />
+
+        {tab === "ilceler" ? (
+          <div className="flex items-center justify-between mt-2 gap-2">
+            <div className="flex gap-1.5">
+              {[["all", "Tümü"], ["merkez", "Merkez"], ["dis", "Dış"]].map(([key, label]) => (
+                <button key={key} onClick={() => setKindFilter(key)}
+                  className="font-mono text-xs px-3 py-1.5 rounded-full jelly"
+                  style={{
+                    background: kindFilter === key ? "#B86F52" : "#EAD9C0",
+                    color: kindFilter === key ? "#FBF6EF" : "#4E3A28",
+                  }}>
+                  {label}
+                </button>
+              ))}
+            </div>
+            <button onClick={() => setSortBy(sortBy === "pop" ? "alpha" : "pop")}
+              className="font-mono text-xs px-3 py-1.5 rounded-full whitespace-nowrap jelly"
+              style={{ background: "#EAD9C0", color: "#4E3A28" }}>
+              {sortBy === "pop" ? "Nüfusa göre ↓" : "A – Z"}
+            </button>
+          </div>
+        ) : (
+          <div className="chip-row flex flex-wrap gap-1.5 mt-2">
+            <button onClick={() => setCatFilter("all")}
+              className="font-mono text-xs px-3 py-1.5 rounded-full shrink-0 jelly"
+              style={{
+                background: catFilter === "all" ? "#B86F52" : "#EAD9C0",
+                color: catFilter === "all" ? "#FBF6EF" : "#4E3A28",
+              }}>
+              Tümü
+            </button>
+            {CATEGORIES.map((c) => (
+              <button key={c.key} onClick={() => setCatFilter(c.key)}
+                className="font-mono text-xs px-3 py-1.5 rounded-full shrink-0 jelly"
+                style={{
+                  background: catFilter === c.key ? "#B86F52" : "#EAD9C0",
+                  color: catFilter === c.key ? "#FBF6EF" : "#4E3A28",
+                }}>
+                {c.short}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* ---------- İçerik ---------- */}
+      {tab === "ilceler" ? (
+        <ol className="px-5 mt-3">
+          {filteredDistricts.length === 0 && (
+            <li className="text-sm py-8 text-center" style={{ color: "rgba(58,42,34,0.5)" }}>"{query}" ile eşleşen ilçe bulunamadı.</li>
+          )}
+          {filteredDistricts.map((d, i) => {
+            const isMerkez = d.kind === "merkez";
+            return (
+              <li key={d.no}>
+                <button
+                  onClick={() => setSelectedNo(d.no)}
+                  className="w-full flex items-center justify-between text-left jelly card-in-float"
+                  style={{
+                    background: isMerkez ? "#3A2A22" : "#EAD9C0",
+                    color: isMerkez ? "#FBF6EF" : "#3A2A22",
+                    borderRadius: 18,
+                    padding: "13px 18px",
+                    marginBottom: 9,
+                    boxShadow: "0 6px 16px -10px rgba(58,42,34,0.35)",
+                    animationDelay: `${Math.min(i * 0.035, 0.5)}s, ${(i % 5) * 0.3}s`,
+                  }}
+                >
+                  <span className="flex items-center gap-3 min-w-0">
+                    <span className="font-mono text-xs shrink-0" style={{ opacity: 0.55 }}>{String(d.no).padStart(2, "0")}</span>
+                    <span className="font-display text-base truncate">{d.name}</span>
+                  </span>
+                  <span className="flex items-center gap-2 shrink-0">
+                    <span className="font-mono text-sm" style={{ opacity: 0.85 }}>{fmt(d.pop)}</span>
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#B86F52" }} />
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+      ) : (
+        <div className="px-5 mt-2">
+          {filteredPlaces.length === 0 && (
+            <div className="text-sm py-8 text-center" style={{ color: "rgba(58,42,34,0.5)" }}>Eşleşen yer bulunamadı.</div>
+          )}
+          {filteredPlaces.map((p, i) => <PlaceRow key={i} p={p} />)}
+        </div>
+      )}
+
+      <p className="px-5 mt-6 text-xs" style={{ color: "rgba(58,42,34,0.45)" }}>
+        Nüfus verileri TÜİK ADNKS 2025 sonuçlarına dayanır. "Haritada Gör" ve "Yol Tarifi" bağlantıları Google Haritalar'ı açar; bu bir web prototipidir, gerçek bir uygulama mağazası sürümü ayrıca paketlenmelidir.
+      </p>
+
+      {/* ---------- İlçe detay sayfası ---------- */}
+      {selected && (
+        <div className="fixed inset-0 z-20 flex items-end justify-center fade-in">
+          <div className="absolute inset-0" style={{ background: "rgba(58,42,34,0.45)" }} onClick={() => setSelectedNo(null)} />
+          <div key={selected.no} className="sheet-in relative w-full max-w-md rounded-t-3xl border-t border-x card-paper px-6 pt-5 pb-8" style={{ borderColor: "rgba(58,42,34,0.18)", maxHeight: "85vh", overflowY: "auto" }}>
+            <div className="flex justify-between items-start">
+              <span className="font-mono text-xs px-2.5 py-1 rounded-full" style={{ background: "#EAD9C0", color: "#4E3A28" }}>SİCİL NO {String(selected.no).padStart(2, "0")} / 25</span>
+              <button onClick={() => setSelectedNo(null)} className="font-mono text-xs px-2.5 py-1 rounded-full jelly" style={{ background: "#EAD9C0", color: "#4E3A28" }}>Kapat ✕</button>
+            </div>
+
+            <div className="flex items-start justify-between mt-4">
+              <div>
+                <h2 className="font-display font-bold" style={{ fontSize: "2.1rem", lineHeight: 1.05 }}>{selected.name}</h2>
+                <div className="flex items-center gap-2 mt-2 flex-wrap">
+                  <KindBadge kind={selected.kind} />
+                  <span className="font-mono text-xs" style={{ color: "rgba(58,42,34,0.55)" }}>06 · {selected.region}</span>
+                </div>
+              </div>
+              <div key={"stamp-" + selected.no} className="stamp-anim shrink-0 ml-3"><SunDisc size={56} color="#B86F52" /></div>
+            </div>
+
+            <div className="mt-6">
+              <div className="flex items-baseline justify-between">
+                <span className="text-xs" style={{ color: "rgba(58,42,34,0.55)" }}>Nüfus</span>
+                <span className="font-mono text-xl font-semibold">{fmt(selected.pop)}</span>
+              </div>
+              <div className="h-2 rounded-full mt-2" style={{ background: "rgba(58,42,34,0.1)" }}>
+                <div className="h-2 rounded-full" style={{ width: `${Math.max(2, (selected.pop / MAX_POP) * 100)}%`, background: selected.kind === "merkez" ? "#B86F52" : "#8C8A68" }} />
+              </div>
+            </div>
+
+            <div className="mt-5 pt-4 border-t" style={{ borderColor: "rgba(58,42,34,0.15)" }}>
+              <span className="text-xs" style={{ color: "rgba(58,42,34,0.55)" }}>Bilinen özelliği</span>
+              <p className="font-body text-sm mt-1.5 leading-relaxed">{selected.note}</p>
+            </div>
+
+            {selectedInfo && (
+              <div className="mt-5 pt-4 border-t" style={{ borderColor: "rgba(58,42,34,0.15)" }}>
+                <span className="text-xs" style={{ color: "rgba(58,42,34,0.55)" }}>İlçe Profili</span>
+                <DistrictImage src={selectedInfo.image} alt={selected.name} credit={selectedInfo.imageCredit} />
+                <div className="mt-2">
+                  <div className="font-display font-semibold text-sm" style={{ color: "#B86F52" }}>Tarih</div>
+                  <p className="font-body text-sm mt-1 leading-relaxed">{selectedInfo.history}</p>
+                </div>
+                <div className="mt-3">
+                  <div className="font-display font-semibold text-sm" style={{ color: "#B86F52" }}>Coğrafya</div>
+                  <p className="font-body text-sm mt-1 leading-relaxed">{selectedInfo.geography}</p>
+                </div>
+                <div className="mt-3">
+                  <div className="font-display font-semibold text-sm" style={{ color: "#B86F52" }}>Ekonomi</div>
+                  <p className="font-body text-sm mt-1 leading-relaxed">{selectedInfo.economy}</p>
+                </div>
+              </div>
+            )}
+
+            <div className="mt-5 pt-4 border-t" style={{ borderColor: "rgba(58,42,34,0.15)" }}>
+              <span className="text-xs" style={{ color: "rgba(58,42,34,0.55)" }}>Gezilecek yerler</span>
+              {selectedPlaces.length === 0 ? (
+                <p className="font-body text-sm mt-2" style={{ color: "rgba(58,42,34,0.5)" }}>
+                  Bu ilçe için henüz gezi rehberi kaydı eklenmedi.
+                </p>
+              ) : (
+                <div className="mt-1">{selectedPlaces.map((p, i) => <PlaceRow key={i} p={p} />)}</div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+
+</script>
+</body>
+</html>
