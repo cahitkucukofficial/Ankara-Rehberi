@@ -7,39 +7,15 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js" crossorigin></script>
 <style>
   html, body, #root { height: 100%; margin: 0; }
-  body { background: #F3E7D8; font-family: system-ui, sans-serif; }
-  #status { position:fixed; top:0; left:0; right:0; z-index:9999; font: 12px monospace; }
-  #status div { padding:8px 12px; }
-  .ok { background:#d1fae5; color:#065f46; }
-  .err { background:#fee2e2; color:#991b1b; white-space:pre-wrap; }
+  body { background: #F3E7D8; }
 </style>
 </head>
 <body>
-<div id="status"></div>
-<div id="root">Yükleniyor...</div>
-
-<script>
-  function report(msg, isErr) {
-    var box = document.createElement('div');
-    box.className = isErr ? 'err' : 'ok';
-    box.textContent = msg;
-    document.getElementById('status').appendChild(box);
-  }
-  window.onerror = function(message, source, lineno, colno, error) {
-    report('JS HATASI: ' + message + ' (satır ' + lineno + ':' + colno + ')' + (error && error.stack ? '\n' + error.stack : ''), true);
-  };
-  window.addEventListener('DOMContentLoaded', function() {
-    report('React yüklendi mi: ' + (typeof React), !window.React);
-    report('ReactDOM yüklendi mi: ' + (typeof ReactDOM), !window.ReactDOM);
-    report('Babel yüklendi mi: ' + (typeof Babel), !window.Babel);
-  });
-</script>
-
-<script type="text/babel" data-presets="react" onerror="report('Babel script yüklenemedi', true)">
-try {
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef, useMemo } = React;
 
 /* ============================================================== */
@@ -858,11 +834,6 @@ function App() {
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 
-  report('App başarıyla render edildi', false);
-} catch (e) {
-  report('RENDER HATASI: ' + e.message + '\n' + e.stack, true);
-  document.getElementById('root').textContent = 'Hata: ' + e.message;
-}
 </script>
 </body>
 </html>
