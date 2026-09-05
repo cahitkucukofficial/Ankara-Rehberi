@@ -62,7 +62,7 @@ const PLACES = [
   { name: "Kuğulu Park", district: "Çankaya", cat: "tarihi", desc: "Kuğularıyla tanınan, kent merkezinde tarihi bir park.", q: "Kuğulu Park Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara%20Ku%C4%9Fulu%20Park.JPG", imageCredit: "Wikimedia Commons (CC BY-SA)" },
   { name: "CerModern", district: "Çankaya", cat: "muze", desc: "Eski bir tren bakım atölyesinde kurulan çağdaş sanat müzesi.", q: "CerModern Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/CerModern%2002.jpg", imageCredit: "Wikimedia Commons" },
   { name: "TBMM (Meclis Binası)", district: "Çankaya", cat: "kamu", desc: "Türkiye Büyük Millet Meclisi'nin bulunduğu tarihi bina.", q: "TBMM Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Building%20of%20the%20Grand%20National%20Assembly%20of%20Turkey.jpg", imageCredit: "Wikimedia Commons" },
-  { name: "Cumhurbaşkanlığı Külliyesi", district: "Çankaya", cat: "kamu", desc: "Devletin üst düzey resmi yönetim binası.", q: "Cumhurbaşkanlığı Külliyesi Ankara" },
+  { name: "Cumhurbaşkanlığı Külliyesi", district: "Çankaya", cat: "kamu", desc: "Devletin üst düzey resmi yönetim binası.", q: "Cumhurbaşkanlığı Külliyesi Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Presidential%20Palace%20Main.jpg", imageCredit: "Wikimedia Commons" },
   { name: "Bahçelievler 7. Cadde", district: "Çankaya", cat: "yeme", desc: "Kafe ve restoranlarıyla bilinen köklü bir sokak.", q: "Bahçelievler 7. Cadde Ankara" },
   { name: "Tunalı Hilmi Caddesi", district: "Çankaya", cat: "yeme", desc: "Restoran, kafe ve mağazalarıyla kalabalık bir cadde.", q: "Tunalı Hilmi Caddesi Ankara" },
   { name: "ODTÜ / Bilkent üniversite misafirhaneleri", district: "Çankaya", cat: "misafir", desc: "Kampüs içi sosyal tesis konaklama seçenekleri.", q: "ODTÜ Bilkent misafirhane Ankara" },
@@ -72,8 +72,8 @@ const PLACES = [
   { name: "Anadolu Medeniyetleri Müzesi", district: "Altındağ", cat: "muze", desc: "Anadolu uygarlıklarına ait eserlerin sergilendiği ödüllü müze.", q: "Anadolu Medeniyetleri Müzesi Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Museum%20of%20Anatolian%20Civilizations001.jpg", imageCredit: "Wikimedia Commons" },
   { name: "Çengelhan Rahmi Koç Müzesi", district: "Altındağ", cat: "muze", desc: "Tarihi bir hanın içinde sanayi ve ulaşım tarihi müzesi.", q: "Çengelhan Rahmi Koç Müzesi Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Rahmi%20M.%20Ko%C3%A7%20Museum%2C%20Ankara.jpg", imageCredit: "Wikimedia Commons" },
   { name: "Cumhuriyet Müzesi (II. TBMM)", district: "Altındağ", cat: "muze", desc: "Cumhuriyet'in ilk yıllarına tanıklık eden eski meclis binası.", q: "Cumhuriyet Müzesi Ankara" },
-  { name: "Roma Hamamı", district: "Altındağ", cat: "oren", desc: "Roma dönemine ait hamam kalıntıları.", q: "Roma Hamamı Ankara" },
-  { name: "Augustus Tapınağı ve Julianus Sütunu", district: "Altındağ", cat: "oren", desc: "Antik Ankyra kentinden kalma tapınak ve sütun.", q: "Augustus Tapınağı Ankara" },
+  { name: "Roma Hamamı", district: "Altındağ", cat: "oren", desc: "Roma dönemine ait hamam kalıntıları.", q: "Roma Hamamı Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ba%C3%B1os%20romanos%2C%20Ankara%2C%20Turqu%C3%ADa%2C%202024-10-03%2C%20DD%2040-44%20PAN.jpg", imageCredit: "Wikimedia Commons" },
+  { name: "Augustus Tapınağı ve Julianus Sütunu", district: "Altındağ", cat: "oren", desc: "Antik Ankyra kentinden kalma tapınak ve sütun.", q: "Augustus Tapınağı Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Temple%20of%20Augustus%20and%20Rome%20with%20the%20Res%20Gestae%20Divi%20Augusti%20(%22Deeds%20of%20the%20Divine%20Augustus%22)%20inscribed%20on%20the%20walls%20of%20the%20cella%2C%20Ancyra%2C%20Ankara%20(Turkey)%20(25821691100).jpg", imageCredit: "Wikimedia Commons (CC BY-SA, foto: Carole Raddato)" },
   { name: "Hacı Bayram-ı Veli Camii", district: "Altındağ", cat: "tarihi", desc: "Ankara'nın manevi merkezlerinden, tarihi bir cami.", q: "Hacı Bayram Camii Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Haci%20Bayram%20Mosque%2002.jpg", imageCredit: "Wikimedia Commons" },
   { name: "Ulus Tarihi Çarşısı / Bakırcılar Çarşısı", district: "Altındağ", cat: "carsi", desc: "Şehrin en eski alışveriş dokusunu koruyan çarşı bölgesi.", q: "Bakırcılar Çarşısı Ankara" },
   { name: "Atpazarı (Antikacılar)", district: "Altındağ", cat: "carsi", desc: "Antika ve el sanatı dükkanlarıyla bilinen tarihi çarşı.", q: "Atpazarı Ankara" },
@@ -92,7 +92,7 @@ const PLACES = [
 
   // Gölbaşı
   { name: "Mogan Gölü", district: "Gölbaşı", cat: "gol", desc: "Tekne turları, yürüyüş yolu ve kıyı kafeleriyle mesire alanı.", q: "Mogan Gölü Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara%20g%C3%B6lba%C5%9F%C4%B1,%20t%C3%BCrkiye%20-%20panoramio.jpg", imageCredit: "Wikimedia Commons (CC BY 3.0)" },
-  { name: "Eymir Gölü", district: "Gölbaşı", cat: "gol", desc: "Doğa yürüyüşü ve gün batımı için sakin bir göl.", q: "Eymir Gölü Ankara" },
+  { name: "Eymir Gölü", district: "Gölbaşı", cat: "gol", desc: "Doğa yürüyüşü ve gün batımı için sakin bir göl.", q: "Eymir Gölü Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Sunset%20at%20Eymir%20lake.jpg", imageCredit: "Wikimedia Commons" },
   { name: "Mogan Gölü kıyı restoranları", district: "Gölbaşı", cat: "yeme", desc: "Göl manzaralı balık ve ev yemeği mekanları.", q: "Mogan Gölü restoranlar" },
 
   // Polatlı
@@ -111,7 +111,7 @@ const PLACES = [
   { name: "Beypazarı güveç ve kurusu", district: "Beypazarı", cat: "yeme", desc: "İlçenin en tanınmış iki yöresel lezzeti.", q: "Beypazarı güveç lokantası", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Beypazar%C4%B1%20kurusu.jpg", imageCredit: "Wikimedia Commons" },
 
   // Kızılcahamam
-  { name: "Soğuksu Milli Parkı", district: "Kızılcahamam", cat: "gol", desc: "Orman içi yürüyüş rotaları ve doğal yaşam alanı.", q: "Soğuksu Milli Parkı Kızılcahamam" },
+  { name: "Soğuksu Milli Parkı", district: "Kızılcahamam", cat: "gol", desc: "Orman içi yürüyüş rotaları ve doğal yaşam alanı.", q: "Soğuksu Milli Parkı Kızılcahamam", image: "https://commons.wikimedia.org/wiki/Special:FilePath/So%C4%9Fuksu%20Milli%20Park%C4%B1.jpg", imageCredit: "Wikimedia Commons" },
   { name: "Kızılcahamam termal tesisleri", district: "Kızılcahamam", cat: "misafir", desc: "Kaplıcalı otel ve konaklama tesisleriyle bilinen bölge.", q: "Kızılcahamam termal otel" },
 
   // Nallıhan
@@ -136,7 +136,7 @@ const PLACES = [
   { name: "Haymana termal otelleri", district: "Haymana", cat: "misafir", desc: "Kaplıca çevresinde konaklama tesisleri.", q: "Haymana termal otel" },
 
   // Şereflikoçhisar
-  { name: "Tuz Gölü", district: "Şereflikoçhisar", cat: "gol", desc: "Türkiye'nin ikinci büyük gölü; tuz üretimiyle bilinir.", q: "Tuz Gölü Şereflikoçhisar" },
+  { name: "Tuz Gölü", district: "Şereflikoçhisar", cat: "gol", desc: "Türkiye'nin ikinci büyük gölü; tuz üretimiyle bilinir.", q: "Tuz Gölü Şereflikoçhisar", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Tuz%20G%C3%B6l%C3%BC1.JPG", imageCredit: "Wikimedia Commons (CC BY-SA)" },
   { name: "Koçhisar Kalesi", district: "Şereflikoçhisar", cat: "tarihi", desc: "İlçe merkezindeki tarihi kale kalıntısı.", q: "Koçhisar Kalesi" },
 
   // Akyurt
