@@ -64,21 +64,21 @@ const PLACES = [
   { name: "TBMM (Meclis Binası)", district: "Çankaya", cat: "kamu", desc: "Türkiye Büyük Millet Meclisi'nin bulunduğu tarihi bina.", q: "TBMM Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Building%20of%20the%20Grand%20National%20Assembly%20of%20Turkey.jpg", imageCredit: "Wikimedia Commons" },
   { name: "Cumhurbaşkanlığı Külliyesi", district: "Çankaya", cat: "kamu", desc: "Devletin üst düzey resmi yönetim binası.", q: "Cumhurbaşkanlığı Külliyesi Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Presidential%20Palace%20Main.jpg", imageCredit: "Wikimedia Commons" },
   { name: "Bahçelievler 7. Cadde", district: "Çankaya", cat: "yeme", desc: "Kafe ve restoranlarıyla bilinen köklü bir sokak.", q: "Bahçelievler 7. Cadde Ankara" },
-  { name: "Tunalı Hilmi Caddesi", district: "Çankaya", cat: "yeme", desc: "Restoran, kafe ve mağazalarıyla kalabalık bir cadde.", q: "Tunalı Hilmi Caddesi Ankara" },
+  { name: "Tunalı Hilmi Caddesi", district: "Çankaya", cat: "yeme", desc: "Restoran, kafe ve mağazalarıyla kalabalık bir cadde.", q: "Tunalı Hilmi Caddesi Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Tunal%C4%B1%20Hilmi%20Caddesi.jpg", imageCredit: "Wikimedia Commons" },
   { name: "ODTÜ / Bilkent üniversite misafirhaneleri", district: "Çankaya", cat: "misafir", desc: "Kampüs içi sosyal tesis konaklama seçenekleri.", q: "ODTÜ Bilkent misafirhane Ankara" },
 
   // Altındağ
   { name: "Ankara Kalesi (Hisar)", district: "Altındağ", cat: "tarihi", desc: "Şehre tepeden bakan, Ankara'nın en eski yapılarından tarihi kale.", q: "Ankara Kalesi", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara%20Kalesi%20%C3%BCst%20b%C3%B6l%C3%BCm.jpg", imageCredit: "Wikimedia Commons (CC BY-SA)" },
   { name: "Anadolu Medeniyetleri Müzesi", district: "Altındağ", cat: "muze", desc: "Anadolu uygarlıklarına ait eserlerin sergilendiği ödüllü müze.", q: "Anadolu Medeniyetleri Müzesi Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Museum%20of%20Anatolian%20Civilizations001.jpg", imageCredit: "Wikimedia Commons" },
   { name: "Çengelhan Rahmi Koç Müzesi", district: "Altındağ", cat: "muze", desc: "Tarihi bir hanın içinde sanayi ve ulaşım tarihi müzesi.", q: "Çengelhan Rahmi Koç Müzesi Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Rahmi%20M.%20Ko%C3%A7%20Museum%2C%20Ankara.jpg", imageCredit: "Wikimedia Commons" },
-  { name: "Cumhuriyet Müzesi (II. TBMM)", district: "Altındağ", cat: "muze", desc: "Cumhuriyet'in ilk yıllarına tanıklık eden eski meclis binası.", q: "Cumhuriyet Müzesi Ankara" },
+  { name: "Cumhuriyet Müzesi (II. TBMM)", district: "Altındağ", cat: "muze", desc: "Cumhuriyet'in ilk yıllarına tanıklık eden eski meclis binası.", q: "Cumhuriyet Müzesi Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/II.%20TBMM%20Binas%C4%B1.JPG", imageCredit: "Wikimedia Commons" },
   { name: "Roma Hamamı", district: "Altındağ", cat: "oren", desc: "Roma dönemine ait hamam kalıntıları.", q: "Roma Hamamı Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ba%C3%B1os%20romanos%2C%20Ankara%2C%20Turqu%C3%ADa%2C%202024-10-03%2C%20DD%2040-44%20PAN.jpg", imageCredit: "Wikimedia Commons" },
   { name: "Augustus Tapınağı ve Julianus Sütunu", district: "Altındağ", cat: "oren", desc: "Antik Ankyra kentinden kalma tapınak ve sütun.", q: "Augustus Tapınağı Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Temple%20of%20Augustus%20and%20Rome%20with%20the%20Res%20Gestae%20Divi%20Augusti%20(%22Deeds%20of%20the%20Divine%20Augustus%22)%20inscribed%20on%20the%20walls%20of%20the%20cella%2C%20Ancyra%2C%20Ankara%20(Turkey)%20(25821691100).jpg", imageCredit: "Wikimedia Commons (CC BY-SA, foto: Carole Raddato)" },
   { name: "Hacı Bayram-ı Veli Camii", district: "Altındağ", cat: "tarihi", desc: "Ankara'nın manevi merkezlerinden, tarihi bir cami.", q: "Hacı Bayram Camii Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Haci%20Bayram%20Mosque%2002.jpg", imageCredit: "Wikimedia Commons" },
   { name: "Ulus Tarihi Çarşısı / Bakırcılar Çarşısı", district: "Altındağ", cat: "carsi", desc: "Şehrin en eski alışveriş dokusunu koruyan çarşı bölgesi.", q: "Bakırcılar Çarşısı Ankara" },
   { name: "Atpazarı (Antikacılar)", district: "Altındağ", cat: "carsi", desc: "Antika ve el sanatı dükkanlarıyla bilinen tarihi çarşı.", q: "Atpazarı Ankara" },
   { name: "Hamamönü", district: "Altındağ", cat: "yeme", desc: "Restore edilmiş Osmanlı evlerinde kahvaltı ve geleneksel lezzet mekanları.", q: "Hamamönü Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Hamam%C3%B6n%C3%BC.JPG", imageCredit: "Wikimedia Commons" },
-  { name: "Ankara Valiliği", district: "Altındağ", cat: "kamu", desc: "İlin en üst düzey mülki idare binası.", q: "Ankara Valiliği" },
+  { name: "Ankara Valiliği", district: "Altındağ", cat: "kamu", desc: "İlin en üst düzey mülki idare binası.", q: "Ankara Valiliği", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara%20H%C3%BCk%C3%BCmet%20Meydan%C4%B1%20Ankara%20H%C3%BCk%C3%BBmet%20Kona%C4%9F%C4%B1%20Building%20in%202011%2002.jpg", imageCredit: "Wikimedia Commons" },
 
   // Keçiören
   { name: "Keçiören Teleferiği", district: "Keçiören", cat: "tarihi", desc: "Ankara Kalesi'ne bağlanan, şehri havadan gösteren hat.", q: "Keçiören Teleferik" },
@@ -88,7 +88,7 @@ const PLACES = [
   { name: "Ostim Sanayi Çarşısı", district: "Yenimahalle", cat: "carsi", desc: "Türkiye'nin köklü sanayi sitelerinden biri.", q: "Ostim Ankara" },
 
   // Etimesgut
-  { name: "Türk Hava Kurumu Havacılık Müzesi", district: "Etimesgut", cat: "muze", desc: "Türk havacılık tarihine ait uçak ve belgelerin sergilendiği müze.", q: "THK Havacılık Müzesi Etimesgut" },
+  { name: "Türk Hava Kurumu Havacılık Müzesi", district: "Etimesgut", cat: "muze", desc: "Türk havacılık tarihine ait uçak ve belgelerin sergilendiği müze.", q: "THK Havacılık Müzesi Etimesgut", image: "https://commons.wikimedia.org/wiki/Special:FilePath/North%20American%20F-100C%20Super%20Sabre%2C%20Turkey%20-%20Air%20Force%20AN1277217.jpg", imageCredit: "Wikimedia Commons" },
 
   // Gölbaşı
   { name: "Mogan Gölü", district: "Gölbaşı", cat: "gol", desc: "Tekne turları, yürüyüş yolu ve kıyı kafeleriyle mesire alanı.", q: "Mogan Gölü Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara%20g%C3%B6lba%C5%9F%C4%B1,%20t%C3%BCrkiye%20-%20panoramio.jpg", imageCredit: "Wikimedia Commons (CC BY 3.0)" },
@@ -115,10 +115,10 @@ const PLACES = [
   { name: "Kızılcahamam termal tesisleri", district: "Kızılcahamam", cat: "misafir", desc: "Kaplıcalı otel ve konaklama tesisleriyle bilinen bölge.", q: "Kızılcahamam termal otel" },
 
   // Nallıhan
-  { name: "Nallıhan Kuş Cenneti", district: "Nallıhan", cat: "gol", desc: "Kızılcahamam-Nallıhan Tabiat Parkı içinde kuş gözlem alanı.", q: "Nallıhan Kuş Cenneti" },
+  { name: "Nallıhan Kuş Cenneti", district: "Nallıhan", cat: "gol", desc: "Kızılcahamam-Nallıhan Tabiat Parkı içinde kuş gözlem alanı.", q: "Nallıhan Kuş Cenneti", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara%20Nall%C4%B1han%20Ku%C5%9F%20Cenneti.jpg", imageCredit: "Wikimedia Commons" },
 
   // Kalecik
-  { name: "Kalecik Kalesi", district: "Kalecik", cat: "tarihi", desc: "İlçeye adını veren tarihi kale kalıntısı.", q: "Kalecik Kalesi" },
+  { name: "Kalecik Kalesi", district: "Kalecik", cat: "tarihi", desc: "İlçeye adını veren tarihi kale kalıntısı.", q: "Kalecik Kalesi", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Kalecik.JPG", imageCredit: "Wikimedia Commons" },
   { name: "Kalecik Karası bağ evleri", district: "Kalecik", cat: "yeme", desc: "Yerli üzüm çeşidinden üretilen şarabıyla tanınan bağ bölgesi.", q: "Kalecik bağ evleri şarap" },
 
   // Çamlıdere
@@ -129,7 +129,7 @@ const PLACES = [
   { name: "Ayaş elması", district: "Ayaş", cat: "yeme", desc: "İlçeyle özdeşleşmiş, sonbaharda pazarları dolduran meyve.", q: "Ayaş elma pazarı" },
 
   // Bala
-  { name: "Hirfanlı Barajı (Bala kıyısı)", district: "Bala", cat: "gol", desc: "Balıkçılık ve mesire alanlarıyla geniş bir baraj gölü.", q: "Hirfanlı Barajı Bala" },
+  { name: "Hirfanlı Barajı (Bala kıyısı)", district: "Bala", cat: "gol", desc: "Balıkçılık ve mesire alanlarıyla geniş bir baraj gölü.", q: "Hirfanlı Barajı Bala", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Hirfanl%C4%B1%20Baraj%C4%B1%2001.JPG", imageCredit: "Wikimedia Commons (CC BY-SA)" },
 
   // Haymana
   { name: "Haymana Kaplıcaları", district: "Haymana", cat: "gol", desc: "Şifalı sularıyla bilinen termal kaynaklar.", q: "Haymana Kaplıcaları" },
