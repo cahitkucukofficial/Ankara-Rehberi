@@ -770,7 +770,7 @@ export default function App() {
               <li key={d.no}>
                 <button
                   onClick={() => setSelectedNo(d.no)}
-                  className="w-full flex items-center justify-between text-left jelly card-in-float"
+                  className="w-full flex items-center justify-between text-left jelly card-in"
                   style={{
                     background: isMerkez ? "#3A2A22" : "#EAD9C0",
                     color: isMerkez ? "#FBF6EF" : "#3A2A22",
@@ -778,8 +778,7 @@ export default function App() {
                     padding: "13px 18px",
                     marginBottom: 9,
                     boxShadow: "0 6px 16px -10px rgba(58,42,34,0.35)",
-                    animationDelay: `${Math.min(i * 0.035, 0.5)}s, ${(i % 5) * 0.3}s`,
-                    animationPlayState: selected ? "paused" : "running",
+                    animationDelay: `${Math.min(i * 0.035, 0.5)}s`,
                   }}
                 >
                   <span className="flex items-center gap-3 min-w-0">
