@@ -81,9 +81,9 @@ const PLACES = [
   { name: "CerModern", district: "Çankaya", cat: "muze", desc: "Eski bir tren bakım atölyesinde kurulan çağdaş sanat müzesi.", q: "CerModern Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/CerModern%2002.jpg", imageCredit: "Wikimedia Commons" },
   { name: "TBMM (Meclis Binası)", district: "Çankaya", cat: "kamu", desc: "Türkiye Büyük Millet Meclisi'nin bulunduğu tarihi bina.", q: "TBMM Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Building%20of%20the%20Grand%20National%20Assembly%20of%20Turkey.jpg", imageCredit: "Wikimedia Commons" },
   { name: "Cumhurbaşkanlığı Külliyesi", district: "Çankaya", cat: "kamu", desc: "Devletin üst düzey resmi yönetim binası.", q: "Cumhurbaşkanlığı Külliyesi Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Presidential%20Palace%20Main.jpg", imageCredit: "Wikimedia Commons" },
-  { name: "Bahçelievler 7. Cadde", district: "Çankaya", cat: "yeme", desc: "Kafe ve restoranlarıyla bilinen köklü bir sokak.", q: "Bahçelievler 7. Cadde Ankara" },
+  { name: "Bahçelievler 7. Cadde", district: "Çankaya", cat: "yeme", desc: "Kafe ve restoranlarıyla bilinen köklü bir sokak.", q: "Bahçelievler 7. Cadde Ankara", tip: "Gençlerin ve öğrencilerin buluşma noktasıdır; akşamları kafe ve barlarıyla canlanır, Tunalı Hilmi'ye göre daha öğrenci dostu fiyatlıdır." },
   { name: "Tunalı Hilmi Caddesi", district: "Çankaya", cat: "yeme", desc: "Restoran, kafe ve mağazalarıyla kalabalık bir cadde.", q: "Tunalı Hilmi Caddesi Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Tunal%C4%B1%20Hilmi%20Caddesi.jpg", imageCredit: "Wikimedia Commons" },
-  { name: "ODTÜ / Bilkent üniversite misafirhaneleri", district: "Çankaya", cat: "misafir", desc: "Kampüs içi sosyal tesis konaklama seçenekleri.", q: "ODTÜ Bilkent misafirhane Ankara" },
+  { name: "ODTÜ / Bilkent üniversite misafirhaneleri", district: "Çankaya", cat: "misafir", desc: "Kampüs içi sosyal tesis konaklama seçenekleri.", q: "ODTÜ Bilkent misafirhane Ankara", tip: "Yeşillik içindeki kampüslerde, şehir merkezine yakın uygun fiyatlı bir konaklama seçeneğidir; rezervasyonu genelde üniversitenin kendi web sitesinden yapmak gerekir." },
 
   // Altındağ
   { name: "Ankara Kalesi (Hisar)", district: "Altındağ", cat: "tarihi", desc: "Şehre tepeden bakan, Ankara'nın en eski yapılarından tarihi kale.", q: "Ankara Kalesi", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara%20Kalesi%20%C3%BCst%20b%C3%B6l%C3%BCm.jpg", imageCredit: "Wikimedia Commons (CC BY-SA)" },
@@ -93,17 +93,17 @@ const PLACES = [
   { name: "Roma Hamamı", district: "Altındağ", cat: "oren", desc: "Roma dönemine ait hamam kalıntıları.", q: "Roma Hamamı Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ba%C3%B1os%20romanos%2C%20Ankara%2C%20Turqu%C3%ADa%2C%202024-10-03%2C%20DD%2040-44%20PAN.jpg", imageCredit: "Wikimedia Commons" },
   { name: "Augustus Tapınağı ve Julianus Sütunu", district: "Altındağ", cat: "oren", desc: "Antik Ankyra kentinden kalma tapınak ve sütun.", q: "Augustus Tapınağı Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Temple%20of%20Augustus%20and%20Rome%20with%20the%20Res%20Gestae%20Divi%20Augusti%20(%22Deeds%20of%20the%20Divine%20Augustus%22)%20inscribed%20on%20the%20walls%20of%20the%20cella%2C%20Ancyra%2C%20Ankara%20(Turkey)%20(25821691100).jpg", imageCredit: "Wikimedia Commons (CC BY-SA, foto: Carole Raddato)" },
   { name: "Hacı Bayram-ı Veli Camii", district: "Altındağ", cat: "tarihi", desc: "Ankara'nın manevi merkezlerinden, tarihi bir cami.", q: "Hacı Bayram Camii Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Haci%20Bayram%20Mosque%2002.jpg", imageCredit: "Wikimedia Commons" },
-  { name: "Ulus Tarihi Çarşısı / Bakırcılar Çarşısı", district: "Altındağ", cat: "carsi", desc: "Şehrin en eski alışveriş dokusunu koruyan çarşı bölgesi.", q: "Bakırcılar Çarşısı Ankara" },
-  { name: "Atpazarı (Antikacılar)", district: "Altındağ", cat: "carsi", desc: "Antika ve el sanatı dükkanlarıyla bilinen tarihi çarşı.", q: "Atpazarı Ankara" },
+  { name: "Ulus Tarihi Çarşısı / Bakırcılar Çarşısı", district: "Altındağ", cat: "carsi", desc: "Şehrin en eski alışveriş dokusunu koruyan çarşı bölgesi.", q: "Bakırcılar Çarşısı Ankara", tip: "Ankara Kalesi'ne çıkan yokuşun hemen dibinde, bakırcılık ve el sanatları esnafının yüzyıllardır sürdürdüğü dar sokaklı bir çarşı; pazarlık kültürü hâlâ yaşıyor." },
+  { name: "Atpazarı (Antikacılar)", district: "Altındağ", cat: "carsi", desc: "Antika ve el sanatı dükkanlarıyla bilinen tarihi çarşı.", q: "Atpazarı Ankara", tip: "Kale eteklerindeki bu pazar antika eşya meraklıları için özellikle hafta sonları gezmeye değer; en iyi parçalar için erken saatlerde gitmekte fayda var." },
   { name: "Hamamönü", district: "Altındağ", cat: "yeme", desc: "Restore edilmiş Osmanlı evlerinde kahvaltı ve geleneksel lezzet mekanları.", q: "Hamamönü Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Hamam%C3%B6n%C3%BC.JPG", imageCredit: "Wikimedia Commons" },
   { name: "Ankara Valiliği", district: "Altındağ", cat: "kamu", desc: "İlin en üst düzey mülki idare binası.", q: "Ankara Valiliği", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara%20H%C3%BCk%C3%BCmet%20Meydan%C4%B1%20Ankara%20H%C3%BCk%C3%BBmet%20Kona%C4%9F%C4%B1%20Building%20in%202011%2002.jpg", imageCredit: "Wikimedia Commons" },
 
   // Keçiören
-  { name: "Keçiören Teleferiği", district: "Keçiören", cat: "tarihi", desc: "Ankara Kalesi'ne bağlanan, şehri havadan gösteren hat.", q: "Keçiören Teleferik" },
+  { name: "Keçiören Teleferiği", district: "Keçiören", cat: "tarihi", desc: "Ankara Kalesi'ne bağlanan, şehri havadan gösteren hat.", q: "Keçiören Teleferik", tip: "Ankara Kalesi'ne bağlanan hat zaman zaman bakım nedeniyle geçici olarak kapatılabiliyor; gitmeden önce güncel çalışma durumunu kontrol etmek iyi olur." },
 
   // Yenimahalle
-  { name: "Anadolu Parkı", district: "Yenimahalle", cat: "gol", desc: "Göl ve yürüyüş alanlarıyla geniş bir kent parkı.", q: "Anadolu Parkı Ankara" },
-  { name: "Ostim Sanayi Çarşısı", district: "Yenimahalle", cat: "carsi", desc: "Türkiye'nin köklü sanayi sitelerinden biri.", q: "Ostim Ankara" },
+  { name: "Anadolu Parkı", district: "Yenimahalle", cat: "gol", desc: "Göl ve yürüyüş alanlarıyla geniş bir kent parkı.", q: "Anadolu Parkı Ankara", tip: "Piknik alanları ve yürüyüş parkurlarıyla bilinen yerel bir park; hafta içi ziyaretler daha sakin geçiyor." },
+  { name: "Ostim Sanayi Çarşısı", district: "Yenimahalle", cat: "carsi", desc: "Türkiye'nin köklü sanayi sitelerinden biri.", q: "Ostim Ankara", tip: "Türkiye'nin en büyük küçük sanayi sitelerinden biri; yedek parça ve sanayi ürünü almak için hafta içi gitmek daha rahat bir deneyim sunuyor." },
 
   // Etimesgut
   { name: "Türk Hava Kurumu Havacılık Müzesi", district: "Etimesgut", cat: "muze", desc: "Türk havacılık tarihine ait uçak ve belgelerin sergilendiği müze.", q: "THK Havacılık Müzesi Etimesgut", image: "https://commons.wikimedia.org/wiki/Special:FilePath/North%20American%20F-100C%20Super%20Sabre%2C%20Turkey%20-%20Air%20Force%20AN1277217.jpg", imageCredit: "Wikimedia Commons" },
@@ -111,73 +111,73 @@ const PLACES = [
   // Gölbaşı
   { name: "Mogan Gölü", district: "Gölbaşı", cat: "gol", desc: "Tekne turları, yürüyüş yolu ve kıyı kafeleriyle mesire alanı.", q: "Mogan Gölü Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara%20g%C3%B6lba%C5%9F%C4%B1,%20t%C3%BCrkiye%20-%20panoramio.jpg", imageCredit: "Wikimedia Commons (CC BY 3.0)" },
   { name: "Eymir Gölü", district: "Gölbaşı", cat: "gol", desc: "Doğa yürüyüşü ve gün batımı için sakin bir göl.", q: "Eymir Gölü Ankara", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Sunset%20at%20Eymir%20lake.jpg", imageCredit: "Wikimedia Commons" },
-  { name: "Mogan Gölü kıyı restoranları", district: "Gölbaşı", cat: "yeme", desc: "Göl manzaralı balık ve ev yemeği mekanları.", q: "Mogan Gölü restoranlar" },
+  { name: "Mogan Gölü kıyı restoranları", district: "Gölbaşı", cat: "yeme", desc: "Göl manzaralı balık ve ev yemeği mekanları.", q: "Mogan Gölü restoranlar", tip: "Göl manzaralı restoranlar özellikle hafta sonu öğle saatlerinde yoğun oluyor; önceden yer ayırtmakta fayda var." },
 
   // Polatlı
   { name: "Gordion Ören Yeri", district: "Polatlı", cat: "oren", desc: "Antik Frig başkenti; Kral Midas Tümülüsü buradadır.", q: "Gordion Ören Yeri Polatlı", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Gordion12.JPG", imageCredit: "Wikimedia Commons" },
-  { name: "Gordion Müzesi", district: "Polatlı", cat: "muze", desc: "Gordion kazılarından çıkan eserlerin sergilendiği müze.", q: "Gordion Müzesi Polatlı" },
-  { name: "Duatepe Anıtı (Sakarya Meydan Muharebesi)", district: "Polatlı", cat: "tarihi", desc: "Kurtuluş Savaşı'nın dönüm noktası Sakarya Meydan Muharebesi anıtı.", q: "Duatepe Anıtı Polatlı" },
+  { name: "Gordion Müzesi", district: "Polatlı", cat: "muze", desc: "Gordion kazılarından çıkan eserlerin sergilendiği müze.", q: "Gordion Müzesi Polatlı", tip: "Kral Midas Tümülüsü'nden çıkan eserlerin sergilendiği müze, Gordion ören yerine çok yakın; ikisini aynı günde gezmek mantıklı bir rota oluşturuyor." },
+  { name: "Duatepe Anıtı (Sakarya Meydan Muharebesi)", district: "Polatlı", cat: "tarihi", desc: "Kurtuluş Savaşı'nın dönüm noktası Sakarya Meydan Muharebesi anıtı.", q: "Duatepe Anıtı Polatlı", tip: "Sakarya Meydan Muharebesi'nin geçtiği tepelerden birinde yer alan anıt kompleksi; Eylül ayına yakın tarihlerde anma törenleri düzenleniyor." },
 
   // Çubuk
-  { name: "Çubuk Barajı", district: "Çubuk", cat: "gol", desc: "Piknik ve yürüyüş alanlarıyla çevrili baraj gölü.", q: "Çubuk Barajı" },
-  { name: "Çubuk turşusu", district: "Çubuk", cat: "yeme", desc: "İlçenin köklü turşuculuk geleneğiyle özdeşleşmiş yöresel lezzeti.", q: "Çubuk turşu pazarı" },
+  { name: "Çubuk Barajı", district: "Çubuk", cat: "gol", desc: "Piknik ve yürüyüş alanlarıyla çevrili baraj gölü.", q: "Çubuk Barajı", tip: "Ankaralıların hafta sonu mesire yeri olarak kullandığı baraj gölü; piknik alanları ve yürüyüş rotalarıyla biliniyor." },
+  { name: "Çubuk turşusu", district: "Çubuk", cat: "yeme", desc: "İlçenin köklü turşuculuk geleneğiyle özdeşleşmiş yöresel lezzeti.", q: "Çubuk turşu pazarı", tip: "Ankara'nın en tanınmış turşu markalarından biri Çubuk'ta üretiliyor; ilçedeki üreticilerden taze almak iyi bir hediyelik seçeneği." },
 
   // Beypazarı
   { name: "Beypazarı Tarihi Evleri ve Çarşısı", district: "Beypazarı", cat: "tarihi", desc: "Korunmuş Osmanlı konaklarıyla dolu taşlı sokaklar.", q: "Beypazarı Tarihi Çarşı", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Beypazar%C4%B1%20H%C4%B1rkatepe%20K%C3%B6y%20%C3%A7e%C5%9Fmesi.jpg", imageCredit: "Wikimedia Commons (CC BY 3.0)" },
-  { name: "Beypazarı Kuru ve Telkari Çarşısı", district: "Beypazarı", cat: "carsi", desc: "Telkari gümüş işçiliği ve Beypazarı kurusunun satıldığı çarşı.", q: "Beypazarı Telkari Çarşısı" },
-  { name: "İnözü Vadisi (Kanyon)", district: "Beypazarı", cat: "gol", desc: "Yürüyüş rotalarıyla doğal bir kanyon vadisi.", q: "İnözü Vadisi Beypazarı" },
+  { name: "Beypazarı Kuru ve Telkari Çarşısı", district: "Beypazarı", cat: "carsi", desc: "Telkari gümüş işçiliği ve Beypazarı kurusunun satıldığı çarşı.", q: "Beypazarı Telkari Çarşısı", tip: "Gümüş telkâriciliğin ve kurutulmuş meyvelerin (özellikle kuru kayısı) satıldığı tarihi sokaklar; hem alışveriş hem fotoğraf için elverişli." },
+  { name: "İnözü Vadisi (Kanyon)", district: "Beypazarı", cat: "gol", desc: "Yürüyüş rotalarıyla doğal bir kanyon vadisi.", q: "İnözü Vadisi Beypazarı", tip: "Dik kayalıkları ve mağaralarıyla bilinen doğal bir vadi; yürüyüş için rahat ayakkabı ve bol su almak önemli." },
   { name: "Beypazarı güveç ve kurusu", district: "Beypazarı", cat: "yeme", desc: "İlçenin en tanınmış iki yöresel lezzeti.", q: "Beypazarı güveç lokantası", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Beypazar%C4%B1%20kurusu.jpg", imageCredit: "Wikimedia Commons" },
 
   // Kızılcahamam
   { name: "Soğuksu Milli Parkı", district: "Kızılcahamam", cat: "gol", desc: "Orman içi yürüyüş rotaları ve doğal yaşam alanı.", q: "Soğuksu Milli Parkı Kızılcahamam", image: "https://commons.wikimedia.org/wiki/Special:FilePath/So%C4%9Fuksu%20Milli%20Park%C4%B1.jpg", imageCredit: "Wikimedia Commons" },
-  { name: "Kızılcahamam termal tesisleri", district: "Kızılcahamam", cat: "misafir", desc: "Kaplıcalı otel ve konaklama tesisleriyle bilinen bölge.", q: "Kızılcahamam termal otel" },
+  { name: "Kızılcahamam termal tesisleri", district: "Kızılcahamam", cat: "misafir", desc: "Kaplıcalı otel ve konaklama tesisleriyle bilinen bölge.", q: "Kızılcahamam termal otel", tip: "Şifalı kaplıcalarıyla bilinen ilçede birçok otel kendi termal havuzuna sahip; kış aylarında özellikle rağbet görüyor." },
 
   // Nallıhan
   { name: "Nallıhan Kuş Cenneti", district: "Nallıhan", cat: "gol", desc: "Kızılcahamam-Nallıhan Tabiat Parkı içinde kuş gözlem alanı.", q: "Nallıhan Kuş Cenneti", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankara%20Nall%C4%B1han%20Ku%C5%9F%20Cenneti.jpg", imageCredit: "Wikimedia Commons" },
 
   // Kalecik
   { name: "Kalecik Kalesi", district: "Kalecik", cat: "tarihi", desc: "İlçeye adını veren tarihi kale kalıntısı.", q: "Kalecik Kalesi", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Kalecik.JPG", imageCredit: "Wikimedia Commons" },
-  { name: "Kalecik Karası bağ evleri", district: "Kalecik", cat: "yeme", desc: "Yerli üzüm çeşidinden üretilen şarabıyla tanınan bağ bölgesi.", q: "Kalecik bağ evleri şarap" },
+  { name: "Kalecik Karası bağ evleri", district: "Kalecik", cat: "yeme", desc: "Yerli üzüm çeşidinden üretilen şarabıyla tanınan bağ bölgesi.", q: "Kalecik bağ evleri şarap", tip: "Kalecik Karası üzümünden şarap üreten bağ evleri Kızılırmak kıyısında yer alıyor; bazıları önceden randevu ile tadım turu düzenliyor." },
 
   // Çamlıdere
-  { name: "Çamlıdere Barajı", district: "Çamlıdere", cat: "gol", desc: "Ankara'nın önemli içme suyu kaynaklarından biri.", q: "Çamlıdere Barajı" },
+  { name: "Çamlıdere Barajı", district: "Çamlıdere", cat: "gol", desc: "Ankara'nın önemli içme suyu kaynaklarından biri.", q: "Çamlıdere Barajı", tip: "Ankara'nın önemli içme suyu kaynaklarından biri olan baraj gölü; çevresindeki yeşil alanlar doğa yürüyüşü için uygun bir rota sunuyor." },
 
   // Ayaş
-  { name: "Ayaş Kaya Mezarları ve Kalesi", district: "Ayaş", cat: "oren", desc: "Kayaya oyulmuş tarihi mezar ve kale kalıntıları.", q: "Ayaş Kalesi" },
-  { name: "Ayaş elması", district: "Ayaş", cat: "yeme", desc: "İlçeyle özdeşleşmiş, sonbaharda pazarları dolduran meyve.", q: "Ayaş elma pazarı" },
+  { name: "Ayaş Kaya Mezarları ve Kalesi", district: "Ayaş", cat: "oren", desc: "Kayaya oyulmuş tarihi mezar ve kale kalıntıları.", q: "Ayaş Kalesi", tip: "Kayalara oyulmuş tarihi mezarlar ve kale kalıntıları ilçe merkezine yakın bir tepede bulunuyor; yerel birinden yön sormak keşfi kolaylaştırır." },
+  { name: "Ayaş elması", district: "Ayaş", cat: "yeme", desc: "İlçeyle özdeşleşmiş, sonbaharda pazarları dolduran meyve.", q: "Ayaş elma pazarı", tip: "Ayaş, elma ve dutuyla tanınır; ilçede düzenlenen yerel festivaller ziyaret için iyi bir zamanlama fırsatı sunar." },
 
   // Bala
   { name: "Hirfanlı Barajı (Bala kıyısı)", district: "Bala", cat: "gol", desc: "Balıkçılık ve mesire alanlarıyla geniş bir baraj gölü.", q: "Hirfanlı Barajı Bala", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Hirfanl%C4%B1%20Baraj%C4%B1%2001.JPG", imageCredit: "Wikimedia Commons (CC BY-SA)" },
 
   // Haymana
-  { name: "Haymana Kaplıcaları", district: "Haymana", cat: "gol", desc: "Şifalı sularıyla bilinen termal kaynaklar.", q: "Haymana Kaplıcaları" },
-  { name: "Haymana termal otelleri", district: "Haymana", cat: "misafir", desc: "Kaplıca çevresinde konaklama tesisleri.", q: "Haymana termal otel" },
+  { name: "Haymana Kaplıcaları", district: "Haymana", cat: "gol", desc: "Şifalı sularıyla bilinen termal kaynaklar.", q: "Haymana Kaplıcaları", tip: "Romatizmal rahatsızlıklara iyi geldiği söylenen kaplıcalarıyla bilinen ilçe, Ankara'ya yakınlığıyla günübirlik kaplıca turları için tercih ediliyor." },
+  { name: "Haymana termal otelleri", district: "Haymana", cat: "misafir", desc: "Kaplıca çevresinde konaklama tesisleri.", q: "Haymana termal otel", tip: "Kaplıca suyunu doğrudan odalara veya havuzlara taşıyan oteller mevcut; hafta sonları için erken rezervasyon önerilir." },
 
   // Şereflikoçhisar
   { name: "Tuz Gölü", district: "Şereflikoçhisar", cat: "gol", desc: "Türkiye'nin ikinci büyük gölü; tuz üretimiyle bilinir.", q: "Tuz Gölü Şereflikoçhisar", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Tuz%20G%C3%B6l%C3%BC1.JPG", imageCredit: "Wikimedia Commons (CC BY-SA)" },
-  { name: "Koçhisar Kalesi", district: "Şereflikoçhisar", cat: "tarihi", desc: "İlçe merkezindeki tarihi kale kalıntısı.", q: "Koçhisar Kalesi" },
+  { name: "Koçhisar Kalesi", district: "Şereflikoçhisar", cat: "tarihi", desc: "İlçe merkezindeki tarihi kale kalıntısı.", q: "Koçhisar Kalesi", tip: "Kaleden bugün geriye yalnızca 'Kale Tepesi' adını taşıyan bir tepe kalmış olsa da, tepeden Şereflikoçhisar'ın genel manzarasını görmek mümkün." },
 
   // Akyurt
-  { name: "Balıkhisar Höyüğü", district: "Akyurt", cat: "oren", desc: "Tunç Çağı'na (yaklaşık MÖ 3000) tarihlenen, 15 metre yüksekliğinde antik höyük.", q: "Balıkhisar Höyüğü Akyurt" },
-  { name: "Kızık Göleti", district: "Akyurt", cat: "gol", desc: "Akyurt Dolay Mesire Alanı içinde, piknik ve kuş gözlemi için tercih edilen gölet.", q: "Kızık Göleti Akyurt" },
-  { name: "Akyurt Merkez Camii", district: "Akyurt", cat: "tarihi", desc: "İlçenin en eski yapılarından biri; çevresinde tarihi çarşı düzenlemesi bulunur.", q: "Akyurt Merkez Camii" },
-  { name: "İbrahim Ağa Konağı", district: "Akyurt", cat: "tarihi", desc: "Restore edilerek kent müzesine dönüştürülen tarihi bir Osmanlı konağı.", q: "İbrahim Ağa Konağı Akyurt" },
-  { name: "Saat Kulesi ve Cumhuriyet Meydanı", district: "Akyurt", cat: "tarihi", desc: "İlçe merkezindeki meydan ve simge saat kulesi.", q: "Cumhuriyet Meydanı Akyurt" },
-  { name: "Karacalar Doğa Parkı", district: "Akyurt", cat: "gol", desc: "Karacalar Mahallesi'nde yürüyüş yolları ve oturma alanlarıyla bir doğa parkı.", q: "Karacalar Mahallesi Parkı Akyurt" },
-  { name: "Balıkhisar Lavanta Bahçesi", district: "Akyurt", cat: "gol", desc: "Balıkhisar Mahallesi'nde, yazın çiçek açan geniş bir lavanta bahçesi.", q: "Lavanta Bahçesi Balıkhisar Akyurt" },
-  { name: "Bölükbaşı Restaurant", district: "Akyurt", cat: "yeme", desc: "Izgara ve kebap çeşitleriyle bilinen, yerel halkın sık tercih ettiği bir lokanta.", q: "Bölükbaşı Restaurant Akyurt" },
-  { name: "Kavaklı Restaurant", district: "Akyurt", cat: "yeme", desc: "Esenboğa Havalimanı yolu üzerinde, yolculuk molaları için tercih edilen bir mekan.", q: "Kavaklı Restaurant Akyurt" },
+  { name: "Balıkhisar Höyüğü", district: "Akyurt", cat: "oren", desc: "Tunç Çağı'na (yaklaşık MÖ 3000) tarihlenen, 15 metre yüksekliğinde antik höyük.", q: "Balıkhisar Höyüğü Akyurt", tip: "Eski Tunç Çağı'na kadar uzanan yerleşim izleri barındıran bir höyük; arkeoloji meraklılarına hitap ediyor." },
+  { name: "Kızık Göleti", district: "Akyurt", cat: "gol", desc: "Akyurt Dolay Mesire Alanı içinde, piknik ve kuş gözlemi için tercih edilen gölet.", q: "Kızık Göleti Akyurt", tip: "Akyurt'un Kızık mahallesindeki bu gölet, yerel halkın piknik ve balık tutma amacıyla tercih ettiği sakin bir alan." },
+  { name: "Akyurt Merkez Camii", district: "Akyurt", cat: "tarihi", desc: "İlçenin en eski yapılarından biri; çevresinde tarihi çarşı düzenlemesi bulunur.", q: "Akyurt Merkez Camii", tip: "İlçe merkezindeki ana cami, Cumhuriyet Meydanı'na yürüme mesafesinde." },
+  { name: "İbrahim Ağa Konağı", district: "Akyurt", cat: "tarihi", desc: "Restore edilerek kent müzesine dönüştürülen tarihi bir Osmanlı konağı.", q: "İbrahim Ağa Konağı Akyurt", tip: "İlçenin Osmanlı dönemi mimarisine dair nadir örneklerden biri olan bu tarihi konak, kent müzesi olarak değerlendirilmesi planlanan yapılardan." },
+  { name: "Saat Kulesi ve Cumhuriyet Meydanı", district: "Akyurt", cat: "tarihi", desc: "İlçe merkezindeki meydan ve simge saat kulesi.", q: "Cumhuriyet Meydanı Akyurt", tip: "İlçe merkezinin buluşma noktası; çevresinde kafeler ve yerel esnaf bulunuyor." },
+  { name: "Karacalar Doğa Parkı", district: "Akyurt", cat: "gol", desc: "Karacalar Mahallesi'nde yürüyüş yolları ve oturma alanlarıyla bir doğa parkı.", q: "Karacalar Mahallesi Parkı Akyurt", tip: "Akyurt'un Karacalar mahallesindeki bu doğa parkı, şehir gürültüsünden uzaklaşmak isteyenler için sakin bir seçenek." },
+  { name: "Balıkhisar Lavanta Bahçesi", district: "Akyurt", cat: "gol", desc: "Balıkhisar Mahallesi'nde, yazın çiçek açan geniş bir lavanta bahçesi.", q: "Lavanta Bahçesi Balıkhisar Akyurt", tip: "Esenboğa Havalimanı'na yakın bu lavanta bahçesi, özellikle Temmuz ayında çiçeklerin doruğa ulaştığı dönemde fotoğraf çekmek için popüler." },
+  { name: "Bölükbaşı Restaurant", district: "Akyurt", cat: "yeme", desc: "Izgara ve kebap çeşitleriyle bilinen, yerel halkın sık tercih ettiği bir lokanta.", q: "Bölükbaşı Restaurant Akyurt", tip: "Yöresel lezzetler sunan yerel işletmelerden biri; ilçeye özgü ev yemekleri arayanlar için tercih ediliyor." },
+  { name: "Kavaklı Restaurant", district: "Akyurt", cat: "yeme", desc: "Esenboğa Havalimanı yolu üzerinde, yolculuk molaları için tercih edilen bir mekan.", q: "Kavaklı Restaurant Akyurt", tip: "Akyurt'un tanınan lokantalarından biri; aile işletmesi sıcaklığıyla öne çıkıyor." },
 
   // Elmadağ
-  { name: "Elmadağ Kayak Merkezi", district: "Elmadağ", cat: "gol", desc: "Ankara'ya en yakın kayak merkezi; kışın kayak, yazın doğa yürüyüşü imkanı sunar.", q: "Elmadağ Kayak Merkezi" },
-  { name: "Hasandede Türbesi", district: "Elmadağ", cat: "tarihi", desc: "Hasanoğlan kasabasında, yanı başındaki Hasandede Pınarı ile birlikte ziyaret edilen tarihi türbe.", q: "Hasandede Türbesi Hasanoğlan" },
+  { name: "Elmadağ Kayak Merkezi", district: "Elmadağ", cat: "gol", desc: "Ankara'ya en yakın kayak merkezi; kışın kayak, yazın doğa yürüyüşü imkanı sunar.", q: "Elmadağ Kayak Merkezi", tip: "Ankara'ya en yakın kayak merkezi; kış aylarında (Ocak-Mart) günübirlik kayak turları için tercih ediliyor." },
+  { name: "Hasandede Türbesi", district: "Elmadağ", cat: "tarihi", desc: "Hasanoğlan kasabasında, yanı başındaki Hasandede Pınarı ile birlikte ziyaret edilen tarihi türbe.", q: "Hasandede Türbesi Hasanoğlan", tip: "Elmadağ'ın manevi mekânlarından biri; ilçeye yapılan gezilerin bir durağı olarak ziyaret ediliyor." },
 
   // Mamak
-  { name: "Aqua Vega Akvaryum", district: "Mamak", cat: "tarihi", desc: "Avrupa'nın en büyük tünel akvaryumlarından biri; çok sayıda deniz canlısını yakından gösterir.", q: "Aqua Vega Akvaryum Mamak" },
+  { name: "Aqua Vega Akvaryum", district: "Mamak", cat: "tarihi", desc: "Avrupa'nın en büyük tünel akvaryumlarından biri; çok sayıda deniz canlısını yakından gösterir.", q: "Aqua Vega Akvaryum Mamak", tip: "Çocuklu aileler için deniz canlılarını yakından görme imkânı sunuyor; hafta içi ziyaretler daha sakin geçiyor." },
 
   // Kahramankazan
-  { name: "15 Temmuz Şehitleri ve Demokrasi Müzesi", district: "Kahramankazan", cat: "muze", desc: "İlçenin 15 Temmuz gecesindeki direnişini anlatan müze.", q: "15 Temmuz Şehitleri ve Demokrasi Müzesi Kahramankazan" },
-  { name: "Satı Kadın Anıt Mezarı", district: "Kahramankazan", cat: "tarihi", desc: "Türkiye'nin ilk kadın milletvekillerinden Satı Çırpan'ın anıldığı yer.", q: "Satı Kadın Anıt Mezarı Kahramankazan" },
+  { name: "15 Temmuz Şehitleri ve Demokrasi Müzesi", district: "Kahramankazan", cat: "muze", desc: "İlçenin 15 Temmuz gecesindeki direnişini anlatan müze.", q: "15 Temmuz Şehitleri ve Demokrasi Müzesi Kahramankazan", tip: "15 Temmuz 2016 darbe girişimini konu alan müze; yakın tarihe tanıklık etmek isteyenler için önemli bir durak." },
+  { name: "Satı Kadın Anıt Mezarı", district: "Kahramankazan", cat: "tarihi", desc: "Türkiye'nin ilk kadın milletvekillerinden Satı Çırpan'ın anıldığı yer.", q: "Satı Kadın Anıt Mezarı Kahramankazan", tip: "Kurtuluş Savaşı döneminde bölgeye katkı sağlamış Satı Kadın anısına yapılmış bir anıt mezar; yerel tarih meraklıları için anlamlı bir durak." },
 
   // Sincan
   { name: "Ankara Harikalar Diyarı", district: "Sincan", cat: "tarihi", desc: "Avrupa'nın en büyük parklarından biri; masal temalı alanlar ve aile aktiviteleriyle bilinir.", q: "Ankara Harikalar Diyarı Sincan", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Harikalar%20Diyari%2005984%20nevit.jpg", imageCredit: "Wikimedia Commons" },
@@ -514,6 +514,14 @@ function PlaceRow({ p }) {
       <div className="text-xs mt-0.5" style={{ color: "rgba(58,42,34,0.5)" }}>{p.district}</div>
       <p className="font-body text-sm mt-1 leading-relaxed" style={{ color: "rgba(58,42,34,0.8)" }}>{p.desc}</p>
       {p.image && <DistrictImage src={p.image} alt={p.name} credit={p.imageCredit} />}
+      {p.tip && (
+        <div
+          className="font-body text-xs mt-2 leading-relaxed rounded-xl px-3 py-2"
+          style={{ background: "#EAD9C0", color: "rgba(58,42,34,0.85)" }}
+        >
+          <span className="font-semibold">💡 Tavsiye: </span>{p.tip}
+        </div>
+      )}
       <div className="flex gap-2 mt-2">
         <a
           href={mapsSearch(p.q)} target="_blank" rel="noreferrer"
@@ -549,6 +557,26 @@ function App() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  useEffect(() => {
+    if (selectedNo != null) {
+      const prevOverflow = document.body.style.overflow;
+      const prevPosition = document.body.style.position;
+      const prevWidth = document.body.style.width;
+      const scrollY = window.scrollY;
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+      return () => {
+        document.body.style.overflow = prevOverflow;
+        document.body.style.position = prevPosition;
+        document.body.style.width = prevWidth;
+        document.body.style.top = "";
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [selectedNo]);
 
   const filteredDistricts = useMemo(() => {
     let list = DISTRICTS.filter((d) => d.name.toLocaleLowerCase("tr").includes(query.toLocaleLowerCase("tr")));
@@ -598,6 +626,26 @@ function App() {
         .card-in-float { animation: cardIn .5s cubic-bezier(.22,.9,.25,1.35) both, cardFloat 4.6s ease-in-out infinite; }
         .jelly { transition: transform .16s cubic-bezier(.34,1.56,.64,1); }
         .jelly:active { transform: scale(.94) rotate(-0.6deg); }
+        .btn3d-close {
+          width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+          display: flex; align-items: center; justify-content: center;
+          background: linear-gradient(180deg, #FBF6EF 0%, #D9BFA3 100%);
+          box-shadow:
+            0 1px 0 rgba(255,255,255,0.9) inset,
+            0 -3px 4px rgba(58,42,34,0.18) inset,
+            0 3px 6px rgba(58,42,34,0.35),
+            0 1px 0 rgba(58,42,34,0.1);
+          border: 1px solid rgba(58,42,34,0.12);
+          transition: transform .12s cubic-bezier(.34,1.56,.64,1), box-shadow .12s ease;
+        }
+        .btn3d-close svg { filter: drop-shadow(0 1px 0 rgba(255,255,255,0.5)); }
+        .btn3d-close:active {
+          transform: scale(.90);
+          box-shadow:
+            0 1px 2px rgba(58,42,34,0.3) inset,
+            0 -1px 2px rgba(255,255,255,0.4) inset,
+            0 1px 1px rgba(58,42,34,0.15);
+        }
         @keyframes blobDrift {
           0%,100% { transform: translate(0,0) scale(1); }
           33%     { transform: translate(4%,-4%) scale(1.08); }
@@ -607,9 +655,9 @@ function App() {
       `}</style>
 
       <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }}>
-        <div className="blob" style={{ width: "70vw", height: "70vw", left: "-20%", top: "-15%", background: "#D9BFA3", animationDelay: "0s" }} />
-        <div className="blob" style={{ width: "60vw", height: "60vw", right: "-20%", top: "35%", background: "#8C8A68", animationDelay: "-6s" }} />
-        <div className="blob" style={{ width: "50vw", height: "50vw", left: "10%", bottom: "-15%", background: "#B86F52", opacity: 0.18, animationDelay: "-11s" }} />
+        <div className="blob" style={{ width: "70vw", height: "70vw", left: "-20%", top: "-15%", background: "#D9BFA3", animationDelay: "0s", animationPlayState: selected ? "paused" : "running" }} />
+        <div className="blob" style={{ width: "60vw", height: "60vw", right: "-20%", top: "35%", background: "#8C8A68", animationDelay: "-6s", animationPlayState: selected ? "paused" : "running" }} />
+        <div className="blob" style={{ width: "50vw", height: "50vw", left: "10%", bottom: "-15%", background: "#B86F52", opacity: 0.18, animationDelay: "-11s", animationPlayState: selected ? "paused" : "running" }} />
       </div>
 
       <div className="relative" style={{ zIndex: 1 }}>
@@ -619,11 +667,11 @@ function App() {
         <div className="flex items-center justify-between mb-4">
           <span
             className="font-mono text-xs tracking-widest px-3 py-1 rounded-full float"
-            style={{ background: "#EAD9C0", color: "#4E3A28" }}
+            style={{ background: "#EAD9C0", color: "#4E3A28", animationPlayState: selected ? "paused" : "running" }}
           >
             T.C. · 06 · BAŞKENT
           </span>
-          <span className="float" style={{ animationDelay: "-2s" }}>
+          <span className="float" style={{ animationDelay: "-2s", animationPlayState: selected ? "paused" : "running" }}>
             <SunDisc size={30} color="#B86F52" />
           </span>
         </div>
@@ -731,6 +779,7 @@ function App() {
                     marginBottom: 9,
                     boxShadow: "0 6px 16px -10px rgba(58,42,34,0.35)",
                     animationDelay: `${Math.min(i * 0.035, 0.5)}s, ${(i % 5) * 0.3}s`,
+                    animationPlayState: selected ? "paused" : "running",
                   }}
                 >
                   <span className="flex items-center gap-3 min-w-0">
@@ -766,7 +815,11 @@ function App() {
           <div key={selected.no} className="sheet-in relative w-full max-w-md rounded-t-3xl border-t border-x card-paper px-6 pt-5 pb-8" style={{ borderColor: "rgba(58,42,34,0.18)", maxHeight: "85vh", overflowY: "auto" }}>
             <div className="flex justify-between items-start">
               <span className="font-mono text-xs px-2.5 py-1 rounded-full" style={{ background: "#EAD9C0", color: "#4E3A28" }}>SİCİL NO {String(selected.no).padStart(2, "0")} / 25</span>
-              <button onClick={() => setSelectedNo(null)} className="font-mono text-xs px-2.5 py-1 rounded-full jelly" style={{ background: "#EAD9C0", color: "#4E3A28" }}>Kapat ✕</button>
+              <button onClick={() => setSelectedNo(null)} aria-label="Kapat" className="btn3d-close">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                  <path d="M1 1L12 12M12 1L1 12" stroke="#4E3A28" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </button>
             </div>
 
             <div className="flex items-start justify-between mt-4">
