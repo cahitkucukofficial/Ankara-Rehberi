@@ -285,30 +285,75 @@ function SplashIntro({ onDone }) {
   const [notes, setNotes] = useState([]);
   const audioCtxRef = useRef(null);
 
+  function getCtx() {
+    if (!audioCtxRef.current) {
+      try {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        audioCtxRef.current = new Ctx();
+      } catch (e) {
+        return null;
+      }
+    }
+    return audioCtxRef.current;
+  }
+
+  useEffect(() => {
+    // Tarayıcılar otomatik sesi engelleyebiliyor; sayfa açılır açılmaz ve
+    // kullanıcı herhangi bir yere ilk dokunduğu anda ses motorunu
+    // uyandırmayı deniyoruz ki ötüş anında hazır olsun.
+    const ctx = getCtx();
+    if (ctx && ctx.state === "suspended") ctx.resume().catch(() => {});
+    function unlock() {
+      const c = getCtx();
+      if (c && c.state === "suspended") c.resume().catch(() => {});
+    }
+    window.addEventListener("touchstart", unlock, { once: true, passive: true });
+    window.addEventListener("pointerdown", unlock, { once: true });
+    return () => {
+      window.removeEventListener("touchstart", unlock);
+      window.removeEventListener("pointerdown", unlock);
+    };
+  }, []);
+
   useEffect(() => {
     function beep() {
       try {
-        if (!audioCtxRef.current) {
-          const Ctx = window.AudioContext || window.webkitAudioContext;
-          audioCtxRef.current = new Ctx();
-        }
-        const ctx = audioCtxRef.current;
+        const ctx = getCtx();
+        if (!ctx) return;
         const playChirp = () => {
-          // Hüdhüd'ün "hup-hup-hup" ötüşüne benzer, art arda 3 kısa nota
-          [0, 0.15, 0.3].forEach((delay, idx) => {
+          // Gerçek Hüdhüd ötüşü: akustik çalışmalarda üç heceli "oop-oop-oop",
+          // tepe frekansı ~575 Hz, toplam süre ~430ms, ton mat ve yumuşak
+          // (parlak/tiz değil) olarak ölçülmüştür. Kaynak: Verboom, W.C. (2009),
+          // "Bird vocalizations: the European hoopoe (Upupa epops)".
+          [0, 0.145, 0.29].forEach((delay, idx) => {
+            const start = ctx.currentTime + delay;
+            const base = 575 + (idx === 1 ? 10 : 0);
+
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
             osc.type = "sine";
-            const start = ctx.currentTime + delay;
-            const base = 780 + idx * 30;
-            osc.frequency.setValueAtTime(base, start);
-            osc.frequency.exponentialRampToValueAtTime(base + 500, start + 0.08);
+            osc.frequency.setValueAtTime(base + 25, start);
+            osc.frequency.exponentialRampToValueAtTime(base - 20, start + 0.12);
             gain.gain.setValueAtTime(0.0001, start);
-            gain.gain.exponentialRampToValueAtTime(0.2, start + 0.02);
-            gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.14);
+            gain.gain.exponentialRampToValueAtTime(0.28, start + 0.025);
+            gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.13);
             osc.connect(gain).connect(ctx.destination);
             osc.start(start);
-            osc.stop(start + 0.16);
+            osc.stop(start + 0.14);
+
+            // hafif bir alt ton — tok bir gövde katıyor, gerçek ötüşteki
+            // doğal rezonansı andırsın diye çok düşük seviyede karıştırılıyor
+            const subOsc = ctx.createOscillator();
+            const subGain = ctx.createGain();
+            subOsc.type = "sine";
+            subOsc.frequency.setValueAtTime((base + 25) / 2, start);
+            subOsc.frequency.exponentialRampToValueAtTime((base - 20) / 2, start + 0.12);
+            subGain.gain.setValueAtTime(0.0001, start);
+            subGain.gain.exponentialRampToValueAtTime(0.1, start + 0.025);
+            subGain.gain.exponentialRampToValueAtTime(0.0001, start + 0.13);
+            subOsc.connect(subGain).connect(ctx.destination);
+            subOsc.start(start);
+            subOsc.stop(start + 0.14);
           });
         };
         if (ctx.state === "suspended") {
@@ -325,7 +370,7 @@ function SplashIntro({ onDone }) {
     // %66-88 yerinde durup öter (notalar bu evrede yükselir),
     // %88-100 sağa aşağı doğru süzülerek sahneden kaybolur.
     const symbolPool = ["♪", "♫", "♩", "♬", "♪", "♫"];
-    const singTimes = [4300, 4700, 5100];
+    const singTimes = [4100, 4500, 4900, 5300];
     const notesPerSing = 3;
     const timers = [];
 
@@ -410,6 +455,14 @@ function SplashIntro({ onDone }) {
           0%, 76% { opacity: 0; transform: translateY(6px); }
           90%, 100% { opacity: 1; transform: translateY(0); }
         }
+        .skip-wiggle { animation: skipWiggle 1.6s ease-in-out infinite; }
+        @keyframes skipWiggle {
+          0%, 100% { transform: scale(1) rotate(0deg); }
+          20%      { transform: scale(1.06) rotate(-4deg); }
+          40%      { transform: scale(0.97) rotate(3deg); }
+          60%      { transform: scale(1.05) rotate(-2deg); }
+          80%      { transform: scale(0.98) rotate(2deg); }
+        }
       `}</style>
 
       <div className="sun-pulse absolute" style={{ top: "18%" }}>
@@ -432,8 +485,8 @@ function SplashIntro({ onDone }) {
 
       <button
         onClick={onDone}
-        className="absolute bottom-6 right-6 font-mono text-xs px-3 py-1.5 rounded-full border"
-        style={{ borderColor: "rgba(58,42,34,0.3)", color: "rgba(58,42,34,0.6)" }}
+        className="absolute bottom-6 right-6 font-mono text-xs px-3 py-1.5 rounded-full border jelly skip-wiggle"
+        style={{ borderColor: "rgba(58,42,34,0.3)", color: "rgba(58,42,34,0.6)", background: "rgba(251,246,239,0.55)" }}
       >
         Atla
       </button>
@@ -626,6 +679,12 @@ export default function App() {
           will-change: transform;
         }
         .jelly:active { transform: scale(.94); opacity: .8; }
+        .tab-btn {
+          border-width: 1.5px;
+          border-style: solid;
+          transition: transform .14s cubic-bezier(.34,1.7,.64,1), background-color .16s ease, color .16s ease, border-color .16s ease, opacity .12s ease;
+        }
+        .tab-btn:active { transform: scale(.95); opacity: .82; }
         .btn3d-close {
           width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
           display: flex; align-items: center; justify-content: center;
@@ -683,20 +742,22 @@ export default function App() {
         <div className="flex gap-2 mt-5">
           <button
             onClick={() => setTab("ilceler")}
-            className="flex-1 font-mono text-xs py-2.5 rounded-full jelly"
+            className="flex-1 font-mono text-xs py-2.5 rounded-full jelly tab-btn"
             style={{
               background: tab === "ilceler" ? "#B86F52" : "#EAD9C0",
               color: tab === "ilceler" ? "#FBF6EF" : "#4E3A28",
+              borderColor: tab === "ilceler" ? "rgba(58,42,34,0.35)" : "rgba(58,42,34,0.22)",
             }}
           >
             İlçe Sicili
           </button>
           <button
             onClick={() => setTab("gezi")}
-            className="flex-1 font-mono text-xs py-2.5 rounded-full jelly"
+            className="flex-1 font-mono text-xs py-2.5 rounded-full jelly tab-btn"
             style={{
               background: tab === "gezi" ? "#B86F52" : "#EAD9C0",
               color: tab === "gezi" ? "#FBF6EF" : "#4E3A28",
+              borderColor: tab === "gezi" ? "rgba(58,42,34,0.35)" : "rgba(58,42,34,0.22)",
             }}
           >
             Gezi Rehberi
@@ -772,8 +833,8 @@ export default function App() {
                   onClick={() => setSelectedNo(d.no)}
                   className="w-full flex items-center justify-between text-left jelly card-in"
                   style={{
-                    background: isMerkez ? "#3A2A22" : "#EAD9C0",
-                    color: isMerkez ? "#FBF6EF" : "#3A2A22",
+                    background: "#EAD9C0",
+                    color: "#3A2A22",
                     borderRadius: 18,
                     padding: "13px 18px",
                     marginBottom: 9,
@@ -811,14 +872,24 @@ export default function App() {
       {selected && (
         <div className="fixed inset-0 z-20 flex items-end justify-center fade-in">
           <div className="absolute inset-0" style={{ background: "rgba(58,42,34,0.45)" }} onClick={() => setSelectedNo(null)} />
+
+          {/* Her zaman ulaşılabilir kapat butonu — sayfa içeriği ne kadar kaydırılırsa kaydırılsın sabit kalır.
+              "fixed" yerine modal kapsayıcısına göre "absolute" kullanılıyor ki geniş/masaüstü
+              önizlemelerde gerçek tarayıcı kenarına kaçıp sayfa dışına taşmasın. */}
+          <button
+            onClick={() => setSelectedNo(null)}
+            aria-label="Kapat"
+            className="btn3d-close absolute z-30"
+            style={{ top: "max(16px, env(safe-area-inset-top))", right: "max(16px, env(safe-area-inset-right))" }}
+          >
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M1 1L12 12M12 1L1 12" stroke="#4E3A28" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+
           <div key={selected.no} className="sheet-in relative w-full max-w-md rounded-t-3xl border-t border-x card-paper px-6 pt-5 pb-8" style={{ borderColor: "rgba(58,42,34,0.18)", maxHeight: "85vh", overflowY: "auto" }}>
             <div className="flex justify-between items-start">
               <span className="font-mono text-xs px-2.5 py-1 rounded-full" style={{ background: "#EAD9C0", color: "#4E3A28" }}>SİCİL NO {String(selected.no).padStart(2, "0")} / 25</span>
-              <button onClick={() => setSelectedNo(null)} aria-label="Kapat" className="btn3d-close">
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                  <path d="M1 1L12 12M12 1L1 12" stroke="#4E3A28" strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              </button>
             </div>
 
             <div className="flex items-start justify-between mt-4">
@@ -875,6 +946,16 @@ export default function App() {
               ) : (
                 <div className="mt-1">{selectedPlaces.map((p, i) => <PlaceRow key={i} p={p} />)}</div>
               )}
+            </div>
+
+            <div className="flex justify-center mt-7">
+              <button
+                onClick={() => setSelectedNo(null)}
+                className="font-mono text-xs px-5 py-2.5 rounded-full jelly flex items-center gap-2"
+                style={{ background: "#3A2A22", color: "#FBF6EF", boxShadow: "0 6px 16px -8px rgba(58,42,34,0.5)" }}
+              >
+                <span>←</span> Ana Sayfaya Dön
+              </button>
             </div>
           </div>
         </div>
