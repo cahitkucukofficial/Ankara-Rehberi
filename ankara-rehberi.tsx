@@ -485,8 +485,8 @@ function SplashIntro({ onDone }) {
 
       <button
         onClick={onDone}
-        className="absolute bottom-6 right-6 font-mono text-xs px-3 py-1.5 rounded-full border jelly skip-wiggle"
-        style={{ borderColor: "rgba(58,42,34,0.3)", color: "rgba(58,42,34,0.6)", background: "rgba(251,246,239,0.55)" }}
+        className="absolute bottom-7 right-6 font-mono text-sm font-bold px-6 py-3 rounded-full jelly skip-wiggle"
+        style={{ color: "#FBF6EF", background: "#B86F52", boxShadow: "0 8px 20px -8px rgba(184,111,82,0.7)" }}
       >
         Atla
       </button>
@@ -672,8 +672,8 @@ export default function App() {
         .card-in { animation: cardIn .5s cubic-bezier(.22,.9,.25,1.35) both; }
         .card-in-float { animation: cardIn .5s cubic-bezier(.22,.9,.25,1.35) both, cardFloat 4.6s ease-in-out infinite; }
         button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-        .search-input { transition: box-shadow .25s ease, transform .18s cubic-bezier(.34,1.56,.64,1); }
-        .search-input:focus { box-shadow: 0 4px 14px -6px rgba(58,42,34,0.35), 0 0 0 2.5px rgba(184,111,82,0.35); transform: scale(1.01); }
+        .search-input { transition: box-shadow .25s ease; font-size: 16px; }
+        .search-input:focus { box-shadow: 0 4px 14px -6px rgba(58,42,34,0.35), 0 0 0 2.5px rgba(184,111,82,0.35); }
         .jelly {
           transition: transform .22s cubic-bezier(.34,1.56,.64,1), background-color .25s ease, color .25s ease, opacity .15s ease;
           will-change: transform;
@@ -772,7 +772,7 @@ export default function App() {
           onChange={(e) => setQuery(e.target.value)}
           placeholder={tab === "ilceler" ? "İlçe ara…" : "Yer ya da ilçe ara…"}
           className="w-full font-body text-sm rounded-full px-4 py-2.5 outline-none search-input"
-          style={{ background: "#FBF6EF", boxShadow: "0 4px 12px -6px rgba(58,42,34,0.25)" }}
+          style={{ background: "#FBF6EF", boxShadow: "0 4px 12px -6px rgba(58,42,34,0.25)", fontSize: 16 }}
         />
 
         {tab === "ilceler" ? (
@@ -868,28 +868,37 @@ export default function App() {
         Nüfus verileri TÜİK ADNKS 2025 sonuçlarına dayanır. "Haritada Gör" ve "Yol Tarifi" bağlantıları Google Haritalar'ı açar; bu bir web prototipidir, gerçek bir uygulama mağazası sürümü ayrıca paketlenmelidir.
       </p>
 
+      {tab === "gezi" && (
+        <div className="flex justify-center mt-6 px-5">
+          <button
+            onClick={() => { setTab("ilceler"); window.scrollTo(0, 0); }}
+            className="font-mono text-xs px-5 py-2.5 rounded-full jelly flex items-center gap-2"
+            style={{ background: "#3A2A22", color: "#FBF6EF", boxShadow: "0 6px 16px -8px rgba(58,42,34,0.5)" }}
+          >
+            <span>⌂</span> Ana Sayfaya Dön
+          </button>
+        </div>
+      )}
+
       {/* ---------- İlçe detay sayfası ---------- */}
       {selected && (
         <div className="fixed inset-0 z-20 flex items-end justify-center fade-in">
           <div className="absolute inset-0" style={{ background: "rgba(58,42,34,0.45)" }} onClick={() => setSelectedNo(null)} />
 
-          {/* Her zaman ulaşılabilir kapat butonu — sayfa içeriği ne kadar kaydırılırsa kaydırılsın sabit kalır.
-              "fixed" yerine modal kapsayıcısına göre "absolute" kullanılıyor ki geniş/masaüstü
-              önizlemelerde gerçek tarayıcı kenarına kaçıp sayfa dışına taşmasın. */}
-          <button
-            onClick={() => setSelectedNo(null)}
-            aria-label="Kapat"
-            className="btn3d-close absolute z-30"
-            style={{ top: "max(16px, env(safe-area-inset-top))", right: "max(16px, env(safe-area-inset-right))" }}
-          >
-            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-              <path d="M1 1L12 12M12 1L1 12" stroke="#4E3A28" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </button>
-
           <div key={selected.no} className="sheet-in relative w-full max-w-md rounded-t-3xl border-t border-x card-paper px-6 pt-5 pb-8" style={{ borderColor: "rgba(58,42,34,0.18)", maxHeight: "85vh", overflowY: "auto" }}>
-            <div className="flex justify-between items-start">
+            {/* Bu satır pencerenin kaydırma alanına yapıştırılmıştır (sticky):
+                içerik ne kadar aşağı kaydırılırsa kaydırılsın kapat butonu
+                her zaman pencerenin gerçek üst kenarında görünür kalır. */}
+            <div
+              className="sticky flex justify-between items-start z-30 pb-2"
+              style={{ top: 0, background: "#FBF6EF" }}
+            >
               <span className="font-mono text-xs px-2.5 py-1 rounded-full" style={{ background: "#EAD9C0", color: "#4E3A28" }}>SİCİL NO {String(selected.no).padStart(2, "0")} / 25</span>
+              <button onClick={() => setSelectedNo(null)} aria-label="Kapat" className="btn3d-close">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                  <path d="M1 1L12 12M12 1L1 12" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </button>
             </div>
 
             <div className="flex items-start justify-between mt-4">
@@ -948,13 +957,20 @@ export default function App() {
               )}
             </div>
 
-            <div className="flex justify-center mt-7">
+            <div className="flex justify-center gap-3 mt-7">
               <button
                 onClick={() => setSelectedNo(null)}
                 className="font-mono text-xs px-5 py-2.5 rounded-full jelly flex items-center gap-2"
+                style={{ background: "#EAD9C0", color: "#4E3A28", boxShadow: "0 6px 16px -10px rgba(58,42,34,0.35)" }}
+              >
+                <span>←</span> Geri
+              </button>
+              <button
+                onClick={() => { setSelectedNo(null); setTab("ilceler"); }}
+                className="font-mono text-xs px-5 py-2.5 rounded-full jelly flex items-center gap-2"
                 style={{ background: "#3A2A22", color: "#FBF6EF", boxShadow: "0 6px 16px -8px rgba(58,42,34,0.5)" }}
               >
-                <span>←</span> Ana Sayfaya Dön
+                <span>⌂</span> Ana Sayfaya Dön
               </button>
             </div>
           </div>
