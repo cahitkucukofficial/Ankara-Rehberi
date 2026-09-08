@@ -293,17 +293,29 @@ function SplashIntro({ onDone }) {
           audioCtxRef.current = new Ctx();
         }
         const ctx = audioCtxRef.current;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(900, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(1500, ctx.currentTime + 0.09);
-        gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.16);
-        osc.connect(gain).connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.18);
+        const playChirp = () => {
+          // Hüdhüd'ün "hup-hup-hup" ötüşüne benzer, art arda 3 kısa nota
+          [0, 0.15, 0.3].forEach((delay, idx) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = "sine";
+            const start = ctx.currentTime + delay;
+            const base = 780 + idx * 30;
+            osc.frequency.setValueAtTime(base, start);
+            osc.frequency.exponentialRampToValueAtTime(base + 500, start + 0.08);
+            gain.gain.setValueAtTime(0.0001, start);
+            gain.gain.exponentialRampToValueAtTime(0.2, start + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.14);
+            osc.connect(gain).connect(ctx.destination);
+            osc.start(start);
+            osc.stop(start + 0.16);
+          });
+        };
+        if (ctx.state === "suspended") {
+          ctx.resume().then(playChirp).catch(() => {});
+        } else {
+          playChirp();
+        }
       } catch (e) {
         /* ses engellenmişse sessizce geç */
       }
@@ -314,7 +326,7 @@ function SplashIntro({ onDone }) {
     // %88-100 sağa aşağı doğru süzülerek sahneden kaybolur.
     const symbolPool = ["♪", "♫", "♩", "♬", "♪", "♫"];
     const singTimes = [4300, 4700, 5100];
-    const notesPerSing = 2;
+    const notesPerSing = 3;
     const timers = [];
 
     singTimes.forEach((t, i) => {
@@ -326,14 +338,14 @@ function SplashIntro({ onDone }) {
               window.setTimeout(() => {
                 const id = Date.now() + Math.random();
                 const symbol = symbolPool[(i * notesPerSing + k) % symbolPool.length];
-                const dx = (k === 0 ? -1 : 1) * (10 + i * 4 + k * 6);
+                const dx = (k === 0 ? -1 : 1) * (8 + i * 4 + k * 8);
                 setNotes((prev) => [...prev, { id, symbol, dx }]);
                 timers.push(
                   window.setTimeout(() => {
                     setNotes((prev) => prev.filter((n) => n.id !== id));
                   }, 1000)
                 );
-              }, k * 110)
+              }, k * 150)
             );
           }
         }, t)
@@ -606,8 +618,14 @@ export default function App() {
         @keyframes cardIn { 0% { opacity:0; transform: translateY(18px) scale(.95); } 100% { opacity:1; transform: translateY(0) scale(1); } }
         .card-in { animation: cardIn .5s cubic-bezier(.22,.9,.25,1.35) both; }
         .card-in-float { animation: cardIn .5s cubic-bezier(.22,.9,.25,1.35) both, cardFloat 4.6s ease-in-out infinite; }
-        .jelly { transition: transform .16s cubic-bezier(.34,1.56,.64,1); }
-        .jelly:active { transform: scale(.94) rotate(-0.6deg); }
+        button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+        .search-input { transition: box-shadow .25s ease, transform .18s cubic-bezier(.34,1.56,.64,1); }
+        .search-input:focus { box-shadow: 0 4px 14px -6px rgba(58,42,34,0.35), 0 0 0 2.5px rgba(184,111,82,0.35); transform: scale(1.01); }
+        .jelly {
+          transition: transform .22s cubic-bezier(.34,1.56,.64,1), background-color .25s ease, color .25s ease, opacity .15s ease;
+          will-change: transform;
+        }
+        .jelly:active { transform: scale(.94); opacity: .8; }
         .btn3d-close {
           width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
           display: flex; align-items: center; justify-content: center;
@@ -692,7 +710,7 @@ export default function App() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={tab === "ilceler" ? "İlçe ara…" : "Yer ya da ilçe ara…"}
-          className="w-full font-body text-sm rounded-full px-4 py-2.5 outline-none"
+          className="w-full font-body text-sm rounded-full px-4 py-2.5 outline-none search-input"
           style={{ background: "#FBF6EF", boxShadow: "0 4px 12px -6px rgba(58,42,34,0.25)" }}
         />
 
