@@ -15,6 +15,11 @@
 </head>
 <body>
 <div id="root"></div>
+<script>
+  // iOS Safari, sayfada bir touchstart dinleyicisi olmadan :active
+  // pseudo-class'ini tetiklemez. Bu bos dinleyici onu etkinlestirir.
+  document.addEventListener('touchstart', function () {}, { passive: true });
+</script>
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef, useMemo } = React;
 
