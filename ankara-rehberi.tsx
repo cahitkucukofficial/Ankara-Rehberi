@@ -826,7 +826,6 @@ export default function App() {
             <li className="text-sm py-8 text-center" style={{ color: "rgba(58,42,34,0.5)" }}>"{query}" ile eşleşen ilçe bulunamadı.</li>
           )}
           {filteredDistricts.map((d, i) => {
-            const isMerkez = d.kind === "merkez";
             return (
               <li key={d.no}>
                 <button
@@ -885,14 +884,10 @@ export default function App() {
         <div className="fixed inset-0 z-20 flex items-end justify-center fade-in">
           <div className="absolute inset-0" style={{ background: "rgba(58,42,34,0.45)" }} onClick={() => setSelectedNo(null)} />
 
-          <div key={selected.no} className="sheet-in relative w-full max-w-md rounded-t-3xl border-t border-x card-paper px-6 pt-5 pb-8" style={{ borderColor: "rgba(58,42,34,0.18)", maxHeight: "85vh", overflowY: "auto" }}>
-            {/* Bu satır pencerenin kaydırma alanına yapıştırılmıştır (sticky):
-                içerik ne kadar aşağı kaydırılırsa kaydırılsın kapat butonu
-                her zaman pencerenin gerçek üst kenarında görünür kalır. */}
-            <div
-              className="sticky flex justify-between items-start z-30 pb-2"
-              style={{ top: 0, background: "#FBF6EF" }}
-            >
+          <div className="relative w-full max-w-md rounded-t-3xl border-t border-x card-paper overflow-hidden fade-in" style={{ borderColor: "rgba(58,42,34,0.18)", maxHeight: "85vh", display: "flex", flexDirection: "column" }}>
+
+            {/* Sabit iç panel: sayfa kayarken hareket etmez, her zaman en üstte durur */}
+            <div className="flex justify-between items-center px-6 pt-5 pb-3 fade-in" style={{ background: "#FBF6EF", borderBottom: "1px solid rgba(58,42,34,0.1)", flexShrink: 0 }}>
               <span className="font-mono text-xs px-2.5 py-1 rounded-full" style={{ background: "#EAD9C0", color: "#4E3A28" }}>SİCİL NO {String(selected.no).padStart(2, "0")} / 25</span>
               <button onClick={() => setSelectedNo(null)} aria-label="Kapat" className="btn3d-close">
                 <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
@@ -900,6 +895,8 @@ export default function App() {
                 </svg>
               </button>
             </div>
+
+            <div key={selected.no} className="sheet-in px-6 pt-4 pb-8" style={{ overflowY: "auto", flex: 1, minHeight: 0 }}>
 
             <div className="flex items-start justify-between mt-4">
               <div>
@@ -973,8 +970,9 @@ export default function App() {
                 <span>⌂</span> Ana Sayfaya Dön
               </button>
             </div>
+            </div>
+            </div>
           </div>
-        </div>
       )}
       </div>
     </div>
